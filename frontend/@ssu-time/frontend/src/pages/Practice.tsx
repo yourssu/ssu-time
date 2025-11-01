@@ -924,9 +924,9 @@ export function Practice() {
       }
 
       // localStorage 업데이트
-      const all = JSON.parse(localStorage.getItem('speakon.scripts') || '{}');
+      const all = JSON.parse(localStorage.getItem('ssu-time.scripts') || '{}');
       all[String(practiceData.fileId)] = scriptData;
-      localStorage.setItem('speakon.scripts', JSON.stringify(all));
+      localStorage.setItem('ssu-time.scripts', JSON.stringify(all));
 
       
       setShowRevisionHistory(false);
@@ -970,7 +970,7 @@ export function Practice() {
       const goalTimeSeconds = goalTime.minutes * 60 + goalTime.seconds;
 
       // localStorage에서 현재 스크립트 데이터 가져오기
-      const all = JSON.parse(localStorage.getItem('speakon.scripts') || '{}');
+      const all = JSON.parse(localStorage.getItem('ssu-time.scripts') || '{}');
       const currentScriptData = all[String(practiceData.fileId)] || { goalTime: goalTimeSeconds, slides: {} };
 
       // 현재 페이지만 업데이트
@@ -982,7 +982,7 @@ export function Practice() {
 
       // localStorage에 저장
       all[String(practiceData.fileId)] = currentScriptData;
-      localStorage.setItem('speakon.scripts', JSON.stringify(all));
+      localStorage.setItem('ssu-time.scripts', JSON.stringify(all));
       
 
       // 2. 그 다음 UI 업데이트
@@ -1400,7 +1400,7 @@ export function Practice() {
           onExport={() => {
             try {
               // localStorage의 json 대본을 가져와 인쇄용 HTML 생성
-              const all = JSON.parse(localStorage.getItem('speakon.scripts') || '{}');
+              const all = JSON.parse(localStorage.getItem('ssu-time.scripts') || '{}');
               const stored = all[String(practiceData.fileId)];
               const map = stored?.slides || {};
               const ids = Object.keys(map).map(n => Number(n)).sort((a,b)=>a-b);
@@ -1696,4 +1696,3 @@ const overlayTextStyle: React.CSSProperties = {
   fontSize: '14px',
   color: colors.label.neutral,
 };
-

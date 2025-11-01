@@ -4,7 +4,7 @@ import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 import env from '../env';
 
-const SpeakOnLogo = () => (
+const SSUTimeLogo = () => (
   <svg
     width="215"
     height="48"
@@ -188,7 +188,7 @@ export const LoginPage: React.FC = () => {
         }}
       >
         <div style={{ width: '215px', height: '48px' }}>
-          <SpeakOnLogo />
+          <SSUTimeLogo />
         </div>
         <div
           style={{

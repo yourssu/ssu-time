@@ -2,7 +2,7 @@ import { getScript as getScriptApi, saveScript, ScriptMap, PageScriptData, Scrip
 
 export type { ScriptMap, PageScriptData, ScriptData };
 
-const STORAGE_KEY = 'speakon.scripts';
+const STORAGE_KEY = 'ssu-time.scripts';
 
 function readAll(): Record<string, ScriptData> {
   try {
@@ -119,5 +119,4 @@ export async function getScript(fileId: number, slideNumber: number): Promise<Pa
 export function clearAll(): void {
   localStorage.removeItem(STORAGE_KEY);
 }
-
 
