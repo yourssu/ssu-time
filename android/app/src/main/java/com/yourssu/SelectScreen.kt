@@ -30,7 +30,11 @@ import androidx.core.content.ContextCompat
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SelectCalendar(category: List<String>, onTestNotification: () -> Unit) {
+fun SelectCalendar(
+    category: List<String>,
+    onLoadCalendar: () -> Unit,
+    onTestNotification: () -> Unit
+) {
     val isChecked = List(size = category.size) {
         remember { mutableStateOf(false) }
     }
@@ -65,7 +69,7 @@ fun SelectCalendar(category: List<String>, onTestNotification: () -> Unit) {
 
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = {}
+            onClick = onLoadCalendar
         ) {
             Text(
                 text = "캘린더 불러오기",
@@ -133,5 +137,5 @@ fun ToggleBoxItem(isSelected: MutableState<Boolean>, name: String) {
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSelectCalendar() {
-    SelectCalendar(listOf("장학", "총학생회", "단과대", "유세인트", "컴퓨터학부", "글로벌미디어학부", "소프트웨어학부", "AI융합학부"), {})
+    SelectCalendar(listOf("장학", "총학생회", "단과대", "유세인트", "컴퓨터학부", "글로벌미디어학부", "소프트웨어학부", "AI융합학부"), {}, {})
 }
