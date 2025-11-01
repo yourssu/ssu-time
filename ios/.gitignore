@@ -108,3 +108,5 @@ fastlane/test_output
 ### Build Log ###
 xcodebuild.log
 
+### SPM ###
+SSUTime/SSUTime.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
