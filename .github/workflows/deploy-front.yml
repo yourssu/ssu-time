@@ -1,0 +1,45 @@
+name: Deploy Frontend to S3 and CloudFront
+
+on:
+  push:
+    branches:
+      - main # 'main' 브랜치에 푸시될 때 실행
+    paths:
+      - 'frontend/**'
+  workflow_dispatch: # 수동 실행 옵션
+
+permissions:
+  id-token: write # OIDC를 위해 필요
+  contents: read # 코드 체크아웃을 위해 필요
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::590662143928:role/GitHubActions-ssu-time-deploy
+          aws-region: ap-northeast-2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies and build
+        working-directory: ./frontend/@ssu-time/frontend
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync ./frontend/@ssu-time/frontend/dist s3://calendar.yourssu.com --delete
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id E20FWG8Q28W5MH --paths "/*"
