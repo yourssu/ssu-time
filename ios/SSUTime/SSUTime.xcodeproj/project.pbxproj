@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DF05BE082EB5EB8A00E9E351 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF05BE072EB5EB8900E9E351 /* WidgetKit.framework */; };
+		DF05BE0A2EB5EB8A00E9E351 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF05BE092EB5EB8A00E9E351 /* SwiftUI.framework */; };
+		DF05BE172EB5EB8C00E9E351 /* SSUTimeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DF05BE052EB5EB8900E9E351 /* SSUTimeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DF05BE232EB5EBC400E9E351 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF05BE1D2EB5EBC400E9E351 /* Assets.xcassets */; };
+		DF05BE252EB5EBC400E9E351 /* SSUTimeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE1F2EB5EBC400E9E351 /* SSUTimeWidget.swift */; };
+		DF05BE262EB5EBC400E9E351 /* SSUTimeWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE202EB5EBC400E9E351 /* SSUTimeWidgetBundle.swift */; };
+		DF05BE272EB5EBC400E9E351 /* SSUTimeWidgetControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE212EB5EBC400E9E351 /* SSUTimeWidgetControl.swift */; };
 		E5CBB7492EB5E89B00AA5996 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB73F2EB5E89B00AA5996 /* AppDelegate.swift */; };
 		E5CBB74A2EB5E89B00AA5996 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7462EB5E89B00AA5996 /* SceneDelegate.swift */; };
 		E5CBB74B2EB5E89B00AA5996 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7472EB5E89B00AA5996 /* ViewController.swift */; };
@@ -14,7 +21,39 @@
 		E5CBB74E2EB5E89B00AA5996 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5CBB7432EB5E89B00AA5996 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		DF05BE152EB5EB8C00E9E351 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5CBB71F2EB5E89000AA5996 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DF05BE042EB5EB8900E9E351;
+			remoteInfo = SSUTimeWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DF05BE182EB5EB8C00E9E351 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DF05BE172EB5EB8C00E9E351 /* SSUTimeWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		DF05BE052EB5EB8900E9E351 /* SSUTimeWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SSUTimeWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF05BE072EB5EB8900E9E351 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		DF05BE092EB5EB8A00E9E351 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		DF05BE1D2EB5EBC400E9E351 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DF05BE1E2EB5EBC400E9E351 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DF05BE1F2EB5EBC400E9E351 /* SSUTimeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSUTimeWidget.swift; sourceTree = "<group>"; };
+		DF05BE202EB5EBC400E9E351 /* SSUTimeWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSUTimeWidgetBundle.swift; sourceTree = "<group>"; };
+		DF05BE212EB5EBC400E9E351 /* SSUTimeWidgetControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSUTimeWidgetControl.swift; sourceTree = "<group>"; };
 		E5CBB7272EB5E89000AA5996 /* SSUTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SSUTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5CBB73F2EB5E89B00AA5996 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5CBB7402EB5E89B00AA5996 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -25,6 +64,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		DF05BE022EB5EB8900E9E351 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DF05BE0A2EB5EB8A00E9E351 /* SwiftUI.framework in Frameworks */,
+				DF05BE082EB5EB8A00E9E351 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E5CBB7242EB5E89000AA5996 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -35,10 +83,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DF05BE062EB5EB8900E9E351 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DF05BE072EB5EB8900E9E351 /* WidgetKit.framework */,
+				DF05BE092EB5EB8A00E9E351 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DF05BE222EB5EBC400E9E351 /* SSUTimeWidget */ = {
+			isa = PBXGroup;
+			children = (
+				DF05BE1D2EB5EBC400E9E351 /* Assets.xcassets */,
+				DF05BE1E2EB5EBC400E9E351 /* Info.plist */,
+				DF05BE1F2EB5EBC400E9E351 /* SSUTimeWidget.swift */,
+				DF05BE202EB5EBC400E9E351 /* SSUTimeWidgetBundle.swift */,
+				DF05BE212EB5EBC400E9E351 /* SSUTimeWidgetControl.swift */,
+			);
+			path = SSUTimeWidget;
+			sourceTree = "<group>";
+		};
 		E5CBB71E2EB5E89000AA5996 = {
 			isa = PBXGroup;
 			children = (
 				E5CBB7482EB5E89B00AA5996 /* SSUTime */,
+				DF05BE222EB5EBC400E9E351 /* SSUTimeWidget */,
+				DF05BE062EB5EB8900E9E351 /* Frameworks */,
 				E5CBB7282EB5E89000AA5996 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -47,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				E5CBB7272EB5E89000AA5996 /* SSUTime.app */,
+				DF05BE052EB5EB8900E9E351 /* SSUTimeWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,6 +139,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		DF05BE042EB5EB8900E9E351 /* SSUTimeWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DF05BE1C2EB5EB8C00E9E351 /* Build configuration list for PBXNativeTarget "SSUTimeWidgetExtension" */;
+			buildPhases = (
+				DF05BE012EB5EB8900E9E351 /* Sources */,
+				DF05BE022EB5EB8900E9E351 /* Frameworks */,
+				DF05BE032EB5EB8900E9E351 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SSUTimeWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = SSUTimeWidgetExtension;
+			productReference = DF05BE052EB5EB8900E9E351 /* SSUTimeWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		E5CBB7262EB5E89000AA5996 /* SSUTime */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E5CBB73A2EB5E89200AA5996 /* Build configuration list for PBXNativeTarget "SSUTime" */;
@@ -74,10 +165,12 @@
 				E5CBB7232EB5E89000AA5996 /* Sources */,
 				E5CBB7242EB5E89000AA5996 /* Frameworks */,
 				E5CBB7252EB5E89000AA5996 /* Resources */,
+				DF05BE182EB5EB8C00E9E351 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DF05BE162EB5EB8C00E9E351 /* PBXTargetDependency */,
 			);
 			name = SSUTime;
 			packageProductDependencies = (
@@ -96,6 +189,9 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					DF05BE042EB5EB8900E9E351 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
 					E5CBB7262EB5E89000AA5996 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
@@ -116,11 +212,20 @@
 			projectRoot = "";
 			targets = (
 				E5CBB7262EB5E89000AA5996 /* SSUTime */,
+				DF05BE042EB5EB8900E9E351 /* SSUTimeWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		DF05BE032EB5EB8900E9E351 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DF05BE232EB5EBC400E9E351 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E5CBB7252EB5E89000AA5996 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -133,6 +238,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		DF05BE012EB5EB8900E9E351 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DF05BE252EB5EBC400E9E351 /* SSUTimeWidget.swift in Sources */,
+				DF05BE262EB5EBC400E9E351 /* SSUTimeWidgetBundle.swift in Sources */,
+				DF05BE272EB5EBC400E9E351 /* SSUTimeWidgetControl.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E5CBB7232EB5E89000AA5996 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -144,6 +259,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DF05BE162EB5EB8C00E9E351 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DF05BE042EB5EB8900E9E351 /* SSUTimeWidgetExtension */;
+			targetProxy = DF05BE152EB5EB8C00E9E351 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E5CBB7432EB5E89B00AA5996 /* LaunchScreen.storyboard */ = {
@@ -157,6 +280,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		DF05BE192EB5EB8C00E9E351 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SSUTimeWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SSUTimeWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ssutime.SSUTime.SSUTimeWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DF05BE1A2EB5EB8C00E9E351 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SSUTimeWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SSUTimeWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ssutime.SSUTime.SSUTimeWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		E5CBB73B2EB5E89200AA5996 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -339,6 +520,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		DF05BE1C2EB5EB8C00E9E351 /* Build configuration list for PBXNativeTarget "SSUTimeWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DF05BE192EB5EB8C00E9E351 /* Debug */,
+				DF05BE1A2EB5EB8C00E9E351 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E5CBB7222EB5E89000AA5996 /* Build configuration list for PBXProject "SSUTime" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
