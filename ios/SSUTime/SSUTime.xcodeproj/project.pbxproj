@@ -14,6 +14,8 @@
 		DF05BE252EB5EBC400E9E351 /* SSUTimeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE1F2EB5EBC400E9E351 /* SSUTimeWidget.swift */; };
 		DF05BE262EB5EBC400E9E351 /* SSUTimeWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE202EB5EBC400E9E351 /* SSUTimeWidgetBundle.swift */; };
 		DF05BE272EB5EBC400E9E351 /* SSUTimeWidgetControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE212EB5EBC400E9E351 /* SSUTimeWidgetControl.swift */; };
+		DF05BE382EB612F300E9E351 /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE372EB612F300E9E351 /* UserDefaults+.swift */; };
+		DF05BE3A2EB6136700E9E351 /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE392EB6136700E9E351 /* UserDefaults+.swift */; };
 		E5CBB7492EB5E89B00AA5996 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB73F2EB5E89B00AA5996 /* AppDelegate.swift */; };
 		E5CBB74A2EB5E89B00AA5996 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7462EB5E89B00AA5996 /* SceneDelegate.swift */; };
 		E5CBB74B2EB5E89B00AA5996 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7472EB5E89B00AA5996 /* ViewController.swift */; };
@@ -61,6 +63,10 @@
 		DF05BE1F2EB5EBC400E9E351 /* SSUTimeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSUTimeWidget.swift; sourceTree = "<group>"; };
 		DF05BE202EB5EBC400E9E351 /* SSUTimeWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSUTimeWidgetBundle.swift; sourceTree = "<group>"; };
 		DF05BE212EB5EBC400E9E351 /* SSUTimeWidgetControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSUTimeWidgetControl.swift; sourceTree = "<group>"; };
+		DF05BE282EB5F9D800E9E351 /* SSUTime.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SSUTime.entitlements; sourceTree = "<group>"; };
+		DF05BE292EB5FBC300E9E351 /* SSUTimeWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SSUTimeWidgetExtension.entitlements; sourceTree = "<group>"; };
+		DF05BE372EB612F300E9E351 /* UserDefaults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+.swift"; sourceTree = "<group>"; };
+		DF05BE392EB6136700E9E351 /* UserDefaults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+.swift"; sourceTree = "<group>"; };
 		E5CBB7272EB5E89000AA5996 /* SSUTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SSUTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5CBB73F2EB5E89B00AA5996 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5CBB7402EB5E89B00AA5996 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -114,6 +120,7 @@
 		DF05BE222EB5EBC400E9E351 /* SSUTimeWidget */ = {
 			isa = PBXGroup;
 			children = (
+				DF05BE392EB6136700E9E351 /* UserDefaults+.swift */,
 				DF05BE1D2EB5EBC400E9E351 /* Assets.xcassets */,
 				DF05BE1E2EB5EBC400E9E351 /* Info.plist */,
 				DF05BE1F2EB5EBC400E9E351 /* SSUTimeWidget.swift */,
@@ -126,6 +133,7 @@
 		E5CBB71E2EB5E89000AA5996 = {
 			isa = PBXGroup;
 			children = (
+				DF05BE292EB5FBC300E9E351 /* SSUTimeWidgetExtension.entitlements */,
 				E5CBB7482EB5E89B00AA5996 /* SSUTime */,
 				DF05BE222EB5EBC400E9E351 /* SSUTimeWidget */,
 				DF05BE062EB5EB8900E9E351 /* Frameworks */,
@@ -146,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				E5CBB79F2EB5F99D00AA5996 /* Network  */,
+				DF05BE282EB5F9D800E9E351 /* SSUTime.entitlements */,
 				E5CBB7512EB5EA6500AA5996 /* Application */,
 				E5CBB7502EB5EA5700AA5996 /* Features */,
 				E5CBB7522EB5EACA00AA5996 /* Global */,
@@ -193,6 +202,7 @@
 		E5CBB7542EB5EAE600AA5996 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				DF05BE372EB612F300E9E351 /* UserDefaults+.swift */,
 				E5CBB7552EB5EB0E00AA5996 /* UiView+.swift */,
 			);
 			path = Extensions;
@@ -382,6 +392,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DF05BE252EB5EBC400E9E351 /* SSUTimeWidget.swift in Sources */,
+				DF05BE3A2EB6136700E9E351 /* UserDefaults+.swift in Sources */,
 				DF05BE262EB5EBC400E9E351 /* SSUTimeWidgetBundle.swift in Sources */,
 				DF05BE272EB5EBC400E9E351 /* SSUTimeWidgetControl.swift in Sources */,
 			);
@@ -398,6 +409,7 @@
 				E5CBB74A2EB5E89B00AA5996 /* SceneDelegate.swift in Sources */,
 				E5CBB76B2EB5F17100AA5996 /* SelectableTagView.swift in Sources */,
 				E5CBB75F2EB5EBD000AA5996 /* ToggleRowView.swift in Sources */,
+				DF05BE382EB612F300E9E351 /* UserDefaults+.swift in Sources */,
 				E5CBB74B2EB5E89B00AA5996 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -429,8 +441,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = SSUTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2N3PMJ78CA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SSUTimeWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SSUTimeWidget;
@@ -458,8 +472,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = SSUTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2N3PMJ78CA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SSUTimeWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SSUTimeWidget;
@@ -487,8 +503,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SSUTime/SSUTime.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2N3PMJ78CA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SSUTime/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -517,8 +535,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SSUTime/SSUTime.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2N3PMJ78CA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SSUTime/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

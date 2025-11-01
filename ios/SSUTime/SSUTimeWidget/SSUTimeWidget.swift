@@ -83,6 +83,8 @@ struct SimpleEntry: TimelineEntry {
 }
 
 struct SSUTimeWidgetEntryView : View {
+    @AppStorage("uuid", store: .Group.shared) var authUUID: String = ""
+
     private static let formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
@@ -96,7 +98,12 @@ struct SSUTimeWidgetEntryView : View {
         VStack {
             Text(Self.formatter.string(from: entry.date))
             Text(entry.event.prefix(10))
+            Text(authUUID)
+            Button("test") {
+                print(authUUID)
+            }
         }
+        .onAppear { print(authUUID) }
     }
 }
 
