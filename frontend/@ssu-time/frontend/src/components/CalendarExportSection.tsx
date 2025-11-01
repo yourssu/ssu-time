@@ -48,28 +48,32 @@ export function CalendarExportSection() {
     }
   }
 
-  const handleAndroidCalendar = () => {
-    const intentUrl = googleCalendarIntentUrl
-    const fallbackUrl = googleCalendarUrl
+  const handleGoogleCalendar = () => {
+    if (platform === 'android') {
+      const intentUrl = googleCalendarIntentUrl
+      const fallbackUrl = googleCalendarUrl
 
-    const clearFallback = () => {
-      if (typeof fallbackTimer === 'number') {
-        window.clearTimeout(fallbackTimer)
-        fallbackTimer = undefined
+      const clearFallback = () => {
+        if (typeof fallbackTimer === 'number') {
+          window.clearTimeout(fallbackTimer)
+          fallbackTimer = undefined
+        }
+        document.removeEventListener('visibilitychange', clearFallback)
+        window.removeEventListener('pagehide', clearFallback)
       }
-      document.removeEventListener('visibilitychange', clearFallback)
-      window.removeEventListener('pagehide', clearFallback)
+
+      let fallbackTimer: number | undefined = window.setTimeout(() => {
+        window.open(fallbackUrl, '_blank', 'noopener')
+        clearFallback()
+      }, 800)
+
+      document.addEventListener('visibilitychange', clearFallback)
+      window.addEventListener('pagehide', clearFallback)
+
+      window.location.href = intentUrl
+    } else {
+      window.open(googleCalendarUrl, '_blank', 'noopener')
     }
-
-    let fallbackTimer: number | undefined = window.setTimeout(() => {
-      window.open(fallbackUrl, '_blank', 'noopener')
-      clearFallback()
-    }, 800)
-
-    document.addEventListener('visibilitychange', clearFallback)
-    window.addEventListener('pagehide', clearFallback)
-
-    window.location.href = intentUrl
   }
 
   const renderButtons = () => {
@@ -82,7 +86,7 @@ export function CalendarExportSection() {
         )
       case 'android':
         return (
-          <button type="button" className={primaryButton} onClick={handleAndroidCalendar}>
+          <button type="button" className={primaryButton} onClick={handleGoogleCalendar}>
             구글 캘린더 앱에서 열기
           </button>
         )
@@ -97,9 +101,9 @@ export function CalendarExportSection() {
             >
               {isProcessing ? '다운로드 중…' : '애플 캘린더(.ics)'}
             </button>
-            <a className={secondaryButton} href={googleCalendarUrl} target="_blank" rel="noreferrer">
+            <button type="button" className={secondaryButton} onClick={handleGoogleCalendar}>
               구글 캘린더 열기
-            </a>
+            </button>
           </div>
         )
     }
