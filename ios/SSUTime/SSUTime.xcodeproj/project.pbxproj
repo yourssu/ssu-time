@@ -12,7 +12,6 @@
 		E5CBB7192EB5E4D900AA5996 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7152EB5E4D900AA5996 /* ViewController.swift */; };
 		E5CBB71A2EB5E4D900AA5996 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5CBB70E2EB5E4D900AA5996 /* Assets.xcassets */; };
 		E5CBB71C2EB5E4D900AA5996 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5CBB7112EB5E4D900AA5996 /* LaunchScreen.storyboard */; };
-		E5CBB71D2EB5E4D900AA5996 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5CBB7132EB5E4D900AA5996 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,7 +20,6 @@
 		E5CBB70E2EB5E4D900AA5996 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E5CBB70F2EB5E4D900AA5996 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5CBB7102EB5E4D900AA5996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		E5CBB7122EB5E4D900AA5996 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E5CBB7142EB5E4D900AA5996 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E5CBB7152EB5E4D900AA5996 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -60,7 +58,6 @@
 				E5CBB70E2EB5E4D900AA5996 /* Assets.xcassets */,
 				E5CBB70F2EB5E4D900AA5996 /* Info.plist */,
 				E5CBB7112EB5E4D900AA5996 /* LaunchScreen.storyboard */,
-				E5CBB7132EB5E4D900AA5996 /* Main.storyboard */,
 				E5CBB7142EB5E4D900AA5996 /* SceneDelegate.swift */,
 				E5CBB7152EB5E4D900AA5996 /* ViewController.swift */,
 			);
@@ -130,7 +127,6 @@
 			files = (
 				E5CBB71A2EB5E4D900AA5996 /* Assets.xcassets in Resources */,
 				E5CBB71C2EB5E4D900AA5996 /* LaunchScreen.storyboard in Resources */,
-				E5CBB71D2EB5E4D900AA5996 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,14 +154,6 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		E5CBB7132EB5E4D900AA5996 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E5CBB7122EB5E4D900AA5996 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -180,7 +168,6 @@
 				INFOPLIST_FILE = SSUTime/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -211,7 +198,6 @@
 				INFOPLIST_FILE = SSUTime/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
