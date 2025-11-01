@@ -49,29 +49,20 @@ export function CalendarExportSection() {
   }
 
   const handleGoogleCalendar = () => {
-    if (platform === 'android') {
-      const intentUrl = googleCalendarIntentUrl
-      const fallbackUrl = googleCalendarUrl
+    // 안드로이드 환경 감지 (User Agent 기반)
+    const isAndroid = /android/i.test(navigator.userAgent || '')
 
-      const clearFallback = () => {
-        if (typeof fallbackTimer === 'number') {
-          window.clearTimeout(fallbackTimer)
-          fallbackTimer = undefined
-        }
-        document.removeEventListener('visibilitychange', clearFallback)
-        window.removeEventListener('pagehide', clearFallback)
-      }
-
-      let fallbackTimer: number | undefined = window.setTimeout(() => {
-        window.open(fallbackUrl, '_blank', 'noopener')
-        clearFallback()
-      }, 800)
-
-      document.addEventListener('visibilitychange', clearFallback)
-      window.addEventListener('pagehide', clearFallback)
-
-      window.location.href = intentUrl
+    if (isAndroid) {
+      // 안드로이드에서는 <a> 태그를 생성하여 클릭 시뮬레이션
+      // 이 방법이 window.location.href보다 브라우저에서 더 잘 작동함
+      const link = document.createElement('a')
+      link.href = googleCalendarIntentUrl
+      link.style.display = 'none'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     } else {
+      // 다른 플랫폼에서는 웹 버전으로 열기
       window.open(googleCalendarUrl, '_blank', 'noopener')
     }
   }
