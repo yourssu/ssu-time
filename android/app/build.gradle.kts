@@ -1,7 +1,16 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+}
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+    println("Mixpanel Dev Token from gradle: " + localProperties.getProperty("mixpanel_dev"))
 }
 
 android {
@@ -16,6 +25,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "MIXPANEL_DEV_TOKEN", "\"${localProperties.getProperty("mixpanel_dev")}\"")
+        buildConfigField("String", "MIXPANEL_PROD_TOKEN", "\"${localProperties.getProperty("mixpanel")}\"")
     }
 
     buildTypes {
@@ -36,6 +48,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -44,6 +57,7 @@ dependencies {
     debugImplementation(libs.androidx.glance.preview)
     debugImplementation(libs.androidx.glance.appwidget.preview)
 
+    implementation(libs.mixpanel.android)
     // For AppWidgets support
     implementation(libs.androidx.glance.appwidget)
     // For interop APIs with Material 3
