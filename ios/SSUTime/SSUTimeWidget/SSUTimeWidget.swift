@@ -114,8 +114,9 @@ struct SSUTimeWidget: Widget {
                     .background()
             }
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("SSUTime Widget")
+        .description("다가오는 이벤트를 위젯으로 확인하세요.")
+        .supportedFamilies([.systemSmall])
     }
 }
 
