@@ -5,7 +5,7 @@ import { Bell } from 'lucide-react'
 
 export function CalendarScreen() {
   const tags = ['기본형', '총학생회', '외부 공모전', '내부 공모전', '교내 행사', '교외 행사']
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [_selectedTags, setSelectedTags] = useState<string[]>([])
 
   const handleTagSelectionChanged = (tags: string[]) => {
     setSelectedTags(tags)
