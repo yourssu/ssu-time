@@ -23,6 +23,8 @@
 		E5CBB7592EB5EB5D00AA5996 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E5CBB7582EB5EB5D00AA5996 /* SnapKit */; };
 		E5CBB75C2EB5EB8D00AA5996 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = E5CBB75B2EB5EB8D00AA5996 /* Moya */; };
 		E5CBB75F2EB5EBD000AA5996 /* ToggleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB75E2EB5EBD000AA5996 /* ToggleRowView.swift */; };
+		E5CBB7692EB5EFCE00AA5996 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7682EB5EFCE00AA5996 /* TagCell.swift */; };
+		E5CBB76B2EB5F17100AA5996 /* SelectableTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB76A2EB5F17100AA5996 /* SelectableTagView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		E5CBB7472EB5E89B00AA5996 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E5CBB7552EB5EB0E00AA5996 /* UiView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UiView+.swift"; sourceTree = "<group>"; };
 		E5CBB75E2EB5EBD000AA5996 /* ToggleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleRowView.swift; sourceTree = "<group>"; };
+		E5CBB7682EB5EFCE00AA5996 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
+		E5CBB76A2EB5F17100AA5996 /* SelectableTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableTagView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,9 +193,19 @@
 		E5CBB75D2EB5EBB900AA5996 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				E5CBB7622EB5EF5400AA5996 /* TagView */,
 				E5CBB75E2EB5EBD000AA5996 /* ToggleRowView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		E5CBB7622EB5EF5400AA5996 /* TagView */ = {
+			isa = PBXGroup;
+			children = (
+				E5CBB7682EB5EFCE00AA5996 /* TagCell.swift */,
+				E5CBB76A2EB5F17100AA5996 /* SelectableTagView.swift */,
+			);
+			path = TagView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,7 +332,9 @@
 			files = (
 				E5CBB7492EB5E89B00AA5996 /* AppDelegate.swift in Sources */,
 				E5CBB7562EB5EB0E00AA5996 /* UiView+.swift in Sources */,
+				E5CBB7692EB5EFCE00AA5996 /* TagCell.swift in Sources */,
 				E5CBB74A2EB5E89B00AA5996 /* SceneDelegate.swift in Sources */,
+				E5CBB76B2EB5F17100AA5996 /* SelectableTagView.swift in Sources */,
 				E5CBB75F2EB5EBD000AA5996 /* ToggleRowView.swift in Sources */,
 				E5CBB74B2EB5E89B00AA5996 /* ViewController.swift in Sources */,
 			);
