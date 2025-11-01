@@ -1,58 +1,23 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  color-scheme: light only;
+}
+
+body {
+  @apply m-0 min-h-screen bg-ssu-background text-ssu-text antialiased;
 }
 
 * {
   @apply box-border;
 }
 
-body {
-  @apply m-0 min-h-screen w-screen overflow-x-hidden bg-ssu-background font-pretendard text-ssu-text;
-}
-
 a {
-  @apply font-medium text-ssu-primary no-underline transition-colors;
+  @apply no-underline;
 }
-
-a:hover {
-  @apply text-ssu-primary-dark;
-}
-
-button {
-  @apply rounded-lg border border-transparent bg-ssu-primary px-5 py-2 text-base font-medium text-white transition-colors;
-}
-
-button:hover {
-  @apply bg-ssu-primary-dark;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-/* 스피너 애니메이션 */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* 에러 알림 슬라이드 다운 애니메이션 */
-@keyframes slideDown {
-  0% { 
-    transform: translate(-50%, -100%);
-    opacity: 0;
-  }
-  100% { 
-    transform: translate(-50%, 0);
-    opacity: 1;
-  }
-} 

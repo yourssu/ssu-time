@@ -1,10 +1,10 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `frontend/@ssu-time/frontend`는 Vite 기반의 React 애플리케이션으로, 환경 변수(`.env`), 빌드 설정(`vite.config.ts`), 워크플로(`.github/workflows/`)가 함께 들어 있습니다. 실제 화면 코드는 `src/` 아래에 있으며 페이지, 컴포넌트, 훅, 서비스(`lib/`)로 모듈화되어 있습니다.
-- `frontend/@ssu-time/frontend/public`에는 정적 자산과 아이콘이 위치합니다. 에셋을 추가할 때는 동일한 디렉터리에 보관하고 경로에는 상대 경로를 사용합니다.
-- 루트에는 `android`, `ios`, `backend` 디렉터리가 있으며, 모바일과 서버 관련 리소스를 위한 자리입니다. 변경 사항이 없을 경우 구조만 유지하세요.
-- 공용 자동화나 문서화는 루트 `.github/`나 각 하위 모듈의 `README.md`를 참고해 정비합니다.
+- `frontend/@ssu-time/frontend`는 Vite 기반의 React 애플리케이션이며, Tailwind CSS가 기본 스타일 계층으로 설정되어 있습니다. 현재 `src/`에는 `App.tsx`, `main.tsx`, `index.css`만 존재하며, 도메인별 폴더는 필요할 때 직접 생성합니다.
+- 정적 자산은 `public/`에 두고, 새 아이콘이나 이미지가 필요하면 이 디렉터리에 SVG/PNG를 추가하세요.
+- 루트(`../..`)에는 모바일·백엔드 프로젝트용 디렉터리가 같이 존재합니다. 다른 영역은 건드리지 말고 프런트엔드 관련 변경만 이 폴더 안에서 진행합니다.
+- 문서화는 `README.md`, `AGENTS.md`를 우선 갱신하고, 추가 지침은 루트 `.github/` 워크플로를 참고합니다.
 
 ## Build, Test, and Development Commands
 - `cd frontend/@ssu-time/frontend && npm install`: 프런트엔드 의존성 설치. 새 패키지 추가 시 `package.json`과 `package-lock.json`을 커밋합니다.
@@ -14,13 +14,13 @@
 - `npm run preview`: 배포 번들을 로컬에서 확인할 때 사용합니다.
 
 ## Coding Style & Naming Conventions
-- TypeScript + React 조합을 기본으로 하며 ESLint(typescript-eslint, react-hooks, react-refresh 플러그인)를 사용합니다. 새 코드는 `npm run lint`를 통과해야 합니다.
-- 들여쓰기는 2칸 스페이스를 유지하고, 컴포넌트/훅은 각각 PascalCase, camelCase 이름을 사용합니다. 파일 이름도 컴포넌트 기준으로 PascalCase(`ResultReport.tsx`)를 따릅니다.
-- `src/lib`의 유틸, 서비스는 기능 단위로 분리하고 `index.ts`를 통해 모듈 경로를 노출합니다. 환경 값 접근은 `src/env.ts`를 통해 관리하세요.
+- TypeScript + React를 기본으로 하며 ESLint(typescript-eslint, react-hooks, react-refresh)를 사용합니다. 모든 변경은 `npm run lint` 경고 상태를 유지하거나 줄이는 방향으로 진행하세요.
+- Tailwind 클래스를 우선 사용하고, 반복되는 패턴은 컴포넌트화하거나 `clsx` 유틸을 활용합니다. 컴포넌트 파일은 PascalCase, 훅은 camelCase로 작성합니다.
+- 전역 스타일은 `index.css`에서만 정의하고, 추가 CSS가 필요하면 Tailwind 플러그인 또는 `@layer`를 통해 선언하세요.
 
 ## Testing Guidelines
-- 현재 프런트엔드에는 공식 테스트 러너가 설정되어 있지 않습니다. 새 테스트를 도입할 때는 Vitest + Testing Library 조합을 권장하며, `src/__tests__/` 또는 각 모듈 폴더 옆에 배치하고 `*.test.ts(x)` 네이밍을 사용하세요.
-- 기능 추가 시 주요 유스케이스와 회귀 위험이 큰 영역부터 스냅샷보다 동작 검증 위주로 커버리지를 확보합니다.
+- 테스트 러너는 아직 연결돼 있지 않습니다. 테스트가 필요하면 Vitest + Testing Library를 도입하고 `src/__tests__/` 또는 기능 폴더 옆에 `*.test.tsx`로 배치하세요.
+- 초기 단계에서는 핵심 로직(시간 계산, 협업 흐름 등)을 함수 단위로 분리해 단위 테스트를 추가하는 전략을 권장합니다.
 
 ## Commit & Pull Request Guidelines
 - 커밋 메시지는 `type: summary` 형태의 컨벤셔널 커밋을 사용하며, 필요한 경우 한국어 설명을 붙여도 됩니다. 예: `feat: 추가 로그인 라우트`.
