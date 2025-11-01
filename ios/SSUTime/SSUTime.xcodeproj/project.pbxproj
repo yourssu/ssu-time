@@ -22,6 +22,7 @@
 		E5CBB7562EB5EB0E00AA5996 /* UiView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7552EB5EB0E00AA5996 /* UiView+.swift */; };
 		E5CBB7592EB5EB5D00AA5996 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E5CBB7582EB5EB5D00AA5996 /* SnapKit */; };
 		E5CBB75C2EB5EB8D00AA5996 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = E5CBB75B2EB5EB8D00AA5996 /* Moya */; };
+		E5CBB75F2EB5EBD000AA5996 /* ToggleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB75E2EB5EBD000AA5996 /* ToggleRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		E5CBB7462EB5E89B00AA5996 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E5CBB7472EB5E89B00AA5996 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E5CBB7552EB5EB0E00AA5996 /* UiView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UiView+.swift"; sourceTree = "<group>"; };
+		E5CBB75E2EB5EBD000AA5996 /* ToggleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +163,7 @@
 		E5CBB7522EB5EACA00AA5996 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				E5CBB75D2EB5EBB900AA5996 /* Components */,
 				E5CBB7542EB5EAE600AA5996 /* Extensions */,
 				E5CBB7532EB5EAD700AA5996 /* Resources */,
 			);
@@ -181,6 +184,14 @@
 				E5CBB7552EB5EB0E00AA5996 /* UiView+.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E5CBB75D2EB5EBB900AA5996 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E5CBB75E2EB5EBD000AA5996 /* ToggleRowView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -308,6 +319,7 @@
 				E5CBB7492EB5E89B00AA5996 /* AppDelegate.swift in Sources */,
 				E5CBB7562EB5EB0E00AA5996 /* UiView+.swift in Sources */,
 				E5CBB74A2EB5E89B00AA5996 /* SceneDelegate.swift in Sources */,
+				E5CBB75F2EB5EBD000AA5996 /* ToggleRowView.swift in Sources */,
 				E5CBB74B2EB5E89B00AA5996 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
