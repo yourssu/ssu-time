@@ -1,50 +1,16 @@
 export function Footer() {
   return (
     <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '37px',
-        padding: '20px 0',
-        boxSizing: 'border-box',
-      }}
       data-name="footer"
+      className="flex items-center gap-[37px] py-5 text-[13px] font-medium text-ssu-muted"
     >
-      <p
-        style={{
-          fontFamily: 'Pretendard, sans-serif',
-          fontWeight: 700,
-          fontSize: '13px',
-          lineHeight: 'normal',
-          color: '#7d7e83',
-          margin: 0,
-          whiteSpace: 'nowrap',
-        }}
-      >
-        SSU Time
-      </p>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '39px',
-          fontFamily: 'Pretendard, sans-serif',
-          fontWeight: 500,
-          fontSize: '13px',
-          lineHeight: 'normal',
-          color: '#7d7e83',
-        }}
-      >
+      <p className="m-0 whitespace-nowrap font-bold">SSU Time</p>
+      <div className="flex items-center gap-[39px]">
         <a
           href="https://ssu-time.notion.site/terms"
           target="_blank"
           rel="noopener noreferrer"
-          style={{
-            color: '#7d7e83',
-            textDecoration: 'none',
-            whiteSpace: 'nowrap',
-            cursor: 'pointer',
-          }}
+          className="whitespace-nowrap text-ssu-muted no-underline transition-colors hover:text-ssu-primary-dark"
         >
           이용약관
         </a>
@@ -52,12 +18,7 @@ export function Footer() {
           href="https://ssu-time.notion.site/privacy"
           target="_blank"
           rel="noopener noreferrer"
-          style={{
-            color: '#7d7e83',
-            textDecoration: 'none',
-            whiteSpace: 'nowrap',
-            cursor: 'pointer',
-          }}
+          className="whitespace-nowrap text-ssu-muted no-underline transition-colors hover:text-ssu-primary-dark"
         >
           개인정보처리방침
         </a>
