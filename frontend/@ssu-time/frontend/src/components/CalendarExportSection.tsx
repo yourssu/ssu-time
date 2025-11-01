@@ -4,6 +4,7 @@ import {
   downloadIcsFile,
   getAppleCalendarUrl,
   getGoogleCalendarUrl,
+  getGoogleCalendarIntentUrl,
 } from '../lib/calendar'
 
 type Platform = 'ios' | 'android' | 'other'
@@ -24,6 +25,7 @@ export function CalendarExportSection() {
     [appleCalendarUrl],
   )
   const googleCalendarUrl = useMemo(() => getGoogleCalendarUrl(), [])
+  const googleCalendarIntentUrl = useMemo(() => getGoogleCalendarIntentUrl(), [])
 
   useEffect(() => {
     setPlatform(detectPlatform())
@@ -46,6 +48,30 @@ export function CalendarExportSection() {
     }
   }
 
+  const handleAndroidCalendar = () => {
+    const intentUrl = googleCalendarIntentUrl
+    const fallbackUrl = googleCalendarUrl
+
+    const clearFallback = () => {
+      if (typeof fallbackTimer === 'number') {
+        window.clearTimeout(fallbackTimer)
+        fallbackTimer = undefined
+      }
+      document.removeEventListener('visibilitychange', clearFallback)
+      window.removeEventListener('pagehide', clearFallback)
+    }
+
+    let fallbackTimer: number | undefined = window.setTimeout(() => {
+      window.open(fallbackUrl, '_blank', 'noopener')
+      clearFallback()
+    }, 800)
+
+    document.addEventListener('visibilitychange', clearFallback)
+    window.addEventListener('pagehide', clearFallback)
+
+    window.location.href = intentUrl
+  }
+
   const renderButtons = () => {
     switch (platform) {
       case 'ios':
@@ -56,9 +82,9 @@ export function CalendarExportSection() {
         )
       case 'android':
         return (
-          <a className={primaryButton} href={googleCalendarUrl} target="_blank" rel="noreferrer">
-            구글 캘린더에서 보기
-          </a>
+          <button type="button" className={primaryButton} onClick={handleAndroidCalendar}>
+            구글 캘린더 앱에서 열기
+          </button>
         )
       default:
         return (
