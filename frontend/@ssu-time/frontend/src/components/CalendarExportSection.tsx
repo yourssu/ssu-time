@@ -6,6 +6,7 @@ import {
   getGoogleCalendarUrl,
   getGoogleCalendarIntentUrl,
 } from '../lib/calendar'
+import { CalendarTypeSelector, type CalendarType } from './CalendarTypeSelector'
 
 type Platform = 'ios' | 'android' | 'other'
 
@@ -18,14 +19,18 @@ const secondaryButton = `${buttonBase} border border-ssu-muted/40 text-ssu-text 
 export function CalendarExportSection() {
   const [platform, setPlatform] = useState<Platform>('other')
   const [isProcessing, setIsProcessing] = useState(false)
+  const [selectedType, setSelectedType] = useState<CalendarType>('basic')
 
-  const appleCalendarUrl = useMemo(() => getAppleCalendarUrl(), [])
+  const appleCalendarUrl = useMemo(() => getAppleCalendarUrl(selectedType), [selectedType])
   const httpsFallbackUrl = useMemo(
     () => appleCalendarUrl.replace(/^webcal:/i, 'https:'),
     [appleCalendarUrl],
   )
-  const googleCalendarUrl = useMemo(() => getGoogleCalendarUrl(), [])
-  const googleCalendarIntentUrl = useMemo(() => getGoogleCalendarIntentUrl(), [])
+  const googleCalendarUrl = useMemo(() => getGoogleCalendarUrl(selectedType), [selectedType])
+  const googleCalendarIntentUrl = useMemo(
+    () => getGoogleCalendarIntentUrl(selectedType),
+    [selectedType],
+  )
 
   useEffect(() => {
     setPlatform(detectPlatform())
@@ -39,7 +44,7 @@ export function CalendarExportSection() {
 
     try {
       setIsProcessing(true)
-      await downloadIcsFile()
+      await downloadIcsFile(selectedType)
     } catch (error) {
       console.error('ICS 파일 다운로드 실패', error)
       window.open(httpsFallbackUrl, '_blank', 'noopener')
@@ -101,15 +106,23 @@ export function CalendarExportSection() {
   }
 
   return (
-    <section className="flex flex-col gap-4 rounded-3xl border border-ssu-muted/20 bg-white p-10 text-center shadow-sm">
-      <h2 className="text-2xl font-semibold text-ssu-text md:text-3xl">일정 받아보기</h2>
-      <p className="text-sm leading-relaxed text-ssu-muted md:text-base">
-        베타 오픈 일정을 캘린더에 바로 추가하고 놓치지 마세요. 사용하는 플랫폼에 맞는 캘린더를 안내해 드립니다.
-      </p>
-      <div className="mt-2 flex justify-center">{renderButtons()}</div>
-      <p className="text-xs text-ssu-muted/80">
-        다른 일정으로 활용하고 싶다면 .ics 파일을 내려받아 캘린더 앱에서 가져올 수 있습니다.
-      </p>
-    </section>
+    <div className="flex flex-col gap-6">
+      {/* Calendar Type Selector */}
+      <section className="rounded-3xl border border-ssu-muted/20 bg-white p-6 shadow-sm md:p-8">
+        <CalendarTypeSelector selectedType={selectedType} onSelectType={setSelectedType} />
+      </section>
+
+      {/* Calendar Export Actions */}
+      <section className="flex flex-col gap-4 rounded-3xl border border-ssu-muted/20 bg-white p-10 text-center shadow-sm">
+        <h2 className="text-2xl font-semibold text-ssu-text md:text-3xl">일정 받아보기</h2>
+        <p className="text-sm leading-relaxed text-ssu-muted md:text-base">
+          선택한 일정을 캘린더에 바로 추가하고 놓치지 마세요. 사용하는 플랫폼에 맞는 캘린더를 안내해 드립니다.
+        </p>
+        <div className="mt-2 flex justify-center">{renderButtons()}</div>
+        <p className="text-xs text-ssu-muted/80">
+          다른 일정으로 활용하고 싶다면 .ics 파일을 내려받아 캘린더 앱에서 가져올 수 있습니다.
+        </p>
+      </section>
+    </div>
   )
 }

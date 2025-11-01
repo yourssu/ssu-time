@@ -1,31 +1,42 @@
-const ICS_FILE_URL = 'https://seyeona-ha.github.io/ssu-calendar/ssu_2025_09.ics'
+export type CalendarType = 'basic' | 'scholarship' | 'student-council'
+
+const ICS_FILE_URLS: Record<CalendarType, string> = {
+  basic: 'https://seyeona-ha.github.io/ssu-calendar/ssu_2025_09.ics',
+  scholarship: 'https://seyeona-ha.github.io/ssu-calendar/ssu_2025_09_scholarship.ics',
+  'student-council': 'https://seyeona-ha.github.io/ssu-calendar/ssu_2025_09_student_council.ics',
+}
+
+const getIcsFileUrl = (type: CalendarType = 'basic'): string => ICS_FILE_URLS[type]
 
 const toWebcalScheme = (url: string): string => url.replace(/^https?:/i, 'webcal:')
 
-const getIcsFileName = () => {
+const getIcsFileName = (type: CalendarType = 'basic') => {
   try {
-    const fromUrl = decodeURIComponent(new URL(ICS_FILE_URL).pathname.split('/').pop() ?? '')
+    const url = getIcsFileUrl(type)
+    const fromUrl = decodeURIComponent(new URL(url).pathname.split('/').pop() ?? '')
     return fromUrl || 'ssu-calendar.ics'
   } catch {
     return 'ssu-calendar.ics'
   }
 }
 
-export const getAppleCalendarUrl = (): string => toWebcalScheme(ICS_FILE_URL)
+export const getAppleCalendarUrl = (type: CalendarType = 'basic'): string =>
+  toWebcalScheme(getIcsFileUrl(type))
 
-export const getGoogleCalendarUrl = (): string => {
-  const cid = encodeURIComponent(toWebcalScheme(ICS_FILE_URL))
+export const getGoogleCalendarUrl = (type: CalendarType = 'basic'): string => {
+  const cid = encodeURIComponent(toWebcalScheme(getIcsFileUrl(type)))
   return `https://calendar.google.com/calendar/u/0/r?cid=${cid}`
 }
 
-export const getGoogleCalendarIntentUrl = (): string => {
-  const cid = encodeURIComponent(toWebcalScheme(ICS_FILE_URL))
-  const fallback = encodeURIComponent(getGoogleCalendarUrl())
+export const getGoogleCalendarIntentUrl = (type: CalendarType = 'basic'): string => {
+  const cid = encodeURIComponent(toWebcalScheme(getIcsFileUrl(type)))
+  const fallback = encodeURIComponent(getGoogleCalendarUrl(type))
   return `intent://calendar.google.com/calendar/u/0/render?cid=${cid}#Intent;scheme=https;package=com.google.android.calendar;S.browser_fallback_url=${fallback};end`
 }
 
-export const downloadIcsFile = async (): Promise<void> => {
-  const response = await fetch(ICS_FILE_URL)
+export const downloadIcsFile = async (type: CalendarType = 'basic'): Promise<void> => {
+  const url = getIcsFileUrl(type)
+  const response = await fetch(url)
   if (!response.ok) {
     throw new Error(`ICS 파일을 가져오지 못했습니다. (status: ${response.status})`)
   }
@@ -35,7 +46,7 @@ export const downloadIcsFile = async (): Promise<void> => {
   const link = document.createElement('a')
 
   link.href = objectUrl
-  link.download = getIcsFileName()
+  link.download = getIcsFileName(type)
 
   document.body.appendChild(link)
   link.click()
