@@ -14,10 +14,15 @@ final class ViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
 
+    private let categoryView = SelectableTagView(tags: [
+        "교내 일정", "교내 장학금", "외부 공모전", "내부 공모전", "교내 행사", "교외 행사"
+    ])
+
     private let toggleStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 16
+        stack.alignment = .fill
         stack.distribution = .equalSpacing
         return stack
     }()
@@ -39,23 +44,29 @@ final class ViewController: UIViewController {
 
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(toggleStackView)
+        contentView.addSubviews(categoryView, toggleStackView)
 
         [toggle1, toggle2, toggle3].forEach { toggleStackView.addArrangedSubview($0) }
 
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
 
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
+            $0.width.equalTo(scrollView.snp.width)
+        }
+
+        categoryView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(24)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.greaterThanOrEqualTo(120)
         }
 
         toggleStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(160)
+            $0.top.equalTo(categoryView.snp.bottom).offset(32)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().offset(-24)
+            $0.bottom.equalToSuperview().offset(-40)
         }
     }
 
@@ -68,6 +79,10 @@ final class ViewController: UIViewController {
         }
         toggle3.setToggleAction { isOn in
             print("업데이트될 때마다 한 번:", isOn)
+        }
+
+        categoryView.onSelectionChanged = { selectedTags in
+            print("선택된 태그:", selectedTags)
         }
     }
 }
