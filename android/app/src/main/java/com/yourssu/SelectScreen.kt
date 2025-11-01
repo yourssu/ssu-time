@@ -1,5 +1,6 @@
 package com.yourssu
 
+import android.Manifest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,10 +26,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SelectCalendar(category: List<String>) {
+fun SelectCalendar(category: List<String>, onTestNotification: () -> Unit) {
     val isChecked = List(size = category.size) {
         remember { mutableStateOf(false) }
     }
@@ -74,6 +76,15 @@ fun SelectCalendar(category: List<String>) {
         Spacer(modifier = Modifier.height(16.dp))
 
         ToggleBoxItem(isEnableNotification, "알림 받기")
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = onTestNotification
+        ) {
+            Text(
+                text = "테스트 알림 받기",
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
     }
 }
 
@@ -122,5 +133,5 @@ fun ToggleBoxItem(isSelected: MutableState<Boolean>, name: String) {
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSelectCalendar() {
-    SelectCalendar(listOf("장학", "총학생회", "단과대", "유세인트", "컴퓨터학부", "글로벌미디어학부", "소프트웨어학부", "AI융합학부"))
+    SelectCalendar(listOf("장학", "총학생회", "단과대", "유세인트", "컴퓨터학부", "글로벌미디어학부", "소프트웨어학부", "AI융합학부"), {})
 }
