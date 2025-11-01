@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import clsx from 'clsx'
 import { TopNavBar } from './components/ui/TopNavBar'
 import { Home } from './pages/Home'
 import { NotFound } from './pages/NotFound'
@@ -9,8 +10,6 @@ import { LoginPage } from './pages/LoginPage'
 import { AuthCallbackPage } from './pages/AuthCallbackPage'
 import PublicPage from './pages/Public'
 import { register } from './lib/api'
-import { colors } from './theme/colors'
-import './App.css'
 import { useIsMobile } from './hooks/useIsMobile'
 
 function App() {
@@ -38,17 +37,11 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div 
-        className="app" 
-        style={{ 
-          width: '100vw', 
-          minHeight: '100vh', 
-          margin: 0, 
-          padding: 0,
-          backgroundColor: colors.background.normal,
-          color: colors.label.normal,
-          fontFamily: 'Pretendard, sans-serif',
-        }}
+      <div
+        className={clsx(
+          'min-h-screen w-screen',
+          'bg-ssu-background font-pretendard text-ssu-text'
+        )}
       >
         <Routes>
           {/* Practice 페이지는 독립적 레이아웃 */}
@@ -70,14 +63,15 @@ function App() {
           <Route path="/*" element={
             <>
               <TopNavBar />
-              <main style={{ 
-                maxWidth: isMobile ? '100%' : '1200px', 
-                margin: '0 auto', 
-                padding: isMobile ? '27px 20px 0' : '27px 70px 0',
-                width: '100%',
-                boxSizing: 'border-box',
-                minHeight: 'calc(100vh - 80px)', // TopNavBar 높이 고려
-              }}>
+              <main
+                className={clsx(
+                  'box-border w-full',
+                  'min-h-[calc(100vh-80px)] pt-[27px]',
+                  isMobile
+                    ? 'px-5'
+                    : 'mx-auto max-w-[1200px] px-[70px]'
+                )}
+              >
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="*" element={<NotFound />} />

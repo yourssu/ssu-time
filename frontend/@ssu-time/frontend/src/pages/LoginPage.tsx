@@ -1,49 +1,6 @@
-import React from 'react';
-import { TopNavBar } from '../components/ui/TopNavBar';
-import { colors } from '../theme/colors';
-import { typography } from '../theme/typography';
-import env from '../env';
-
-const SSUTimeLogo = () => (
-  <svg
-    width="215"
-    height="48"
-    viewBox="0 0 215 48"
-    fill="none"
-    style={{ display: 'block', width: '100%', height: '100%' }}
-  >
-    <g>
-      <path
-        d="M13.4413 37.5C11.4705 37.5 9.59212 37.1875 7.80611 36.5625C6.0201 35.9375 4.46503 35.0625 3.14092 33.9375C1.81681 32.8125 0.846817 31.5156 0.23095 30.0469C-0.0769833 29.3906 -0.0769833 28.7812 0.23095 28.2187C0.569677 27.6562 1.12396 27.2969 1.89379 27.1406C2.44807 27.0156 2.98695 27.1094 3.51044 27.4219C4.06472 27.7031 4.48043 28.1406 4.75757 28.7344C5.12709 29.5156 5.72756 30.2344 6.55898 30.8906C7.42119 31.5469 8.45277 32.0781 9.65371 32.4844C10.8547 32.8906 12.1172 33.0937 13.4413 33.0937C14.9194 33.0937 16.2743 32.8594 17.506 32.3906C18.7685 31.9219 19.7847 31.25 20.5546 30.375C21.3244 29.4687 21.7093 28.3594 21.7093 27.0469C21.7093 25.3906 21.0626 23.9062 19.7693 22.5937C18.5068 21.2812 16.4128 20.4687 13.4875 20.1562C9.66911 19.7812 6.66676 18.6406 4.48043 16.7344C2.2941 14.8281 1.20094 12.4687 1.20094 9.65625C1.20094 7.59375 1.77062 5.84375 2.90997 4.40625C4.04932 2.96875 5.58899 1.875 7.52897 1.125C9.49974 0.375 11.6861 0 14.088 0C15.9663 0 17.5984 0.265624 18.9841 0.796873C20.4006 1.32812 21.6323 2.0625 22.6793 3C23.7263 3.9375 24.6347 5.04687 25.4045 6.32812C25.8356 7.01563 26.005 7.67187 25.9126 8.29687C25.851 8.89062 25.5585 9.35937 25.035 9.70313C24.4499 10.0781 23.8186 10.1562 23.1412 9.9375C22.4637 9.71875 21.9556 9.3125 21.6169 8.71875C21.1242 7.8125 20.5238 7.04687 19.8155 6.42187C19.1073 5.79687 18.2758 5.3125 17.3213 4.96875C16.3667 4.59375 15.2427 4.40625 13.9494 4.40625C11.6707 4.375 9.76149 4.8125 8.22182 5.71875C6.68215 6.59375 5.91232 7.95312 5.91232 9.79687C5.91232 10.7344 6.14327 11.6406 6.60517 12.5156C7.09786 13.3594 7.97547 14.0937 9.238 14.7187C10.5313 15.3437 12.3789 15.7812 14.7808 16.0312C18.4452 16.4062 21.2936 17.5469 23.326 19.4531C25.3891 21.3281 26.4207 23.8125 26.4207 26.9062C26.4207 28.6875 26.0512 30.2344 25.3121 31.5469C24.6039 32.8594 23.6339 33.9687 22.4022 34.875C21.2012 35.75 19.8155 36.4062 18.2451 36.8437C16.7054 37.2812 15.1041 37.5 13.4413 37.5Z"
-        fill={colors.label.normal}
-      />
-      <path
-        d="M34.295 48C33.6175 48 33.0479 47.7656 32.586 47.2969C32.1549 46.8594 31.9393 46.2969 31.9393 45.6094V24.2344C31.9701 21.7656 32.5398 19.5469 33.6483 17.5781C34.7569 15.6094 36.2658 14.0625 38.175 12.9375C40.0841 11.7813 42.2397 11.2031 44.6416 11.2031C47.0742 11.2031 49.2452 11.7813 51.1543 12.9375C53.0635 14.0625 54.5724 15.6094 55.681 17.5781C56.8203 19.5469 57.39 21.7656 57.39 24.2344C57.39 26.7031 56.8665 28.9219 55.8195 30.8906C54.8034 32.8281 53.4023 34.375 51.6162 35.5313C49.8302 36.6563 47.8133 37.2187 45.5654 37.2187C43.7485 37.2187 42.0703 36.8438 40.5306 36.0938C39.0218 35.3125 37.7285 34.2656 36.6507 32.9531V45.6094C36.6507 46.2969 36.4351 46.8594 36.004 47.2969C35.5729 47.7656 35.0032 48 34.295 48ZM44.6416 33C46.212 33 47.6131 32.625 48.8448 31.875C50.0766 31.0937 51.0466 30.0469 51.7548 28.7344C52.4939 27.3906 52.8634 25.8906 52.8634 24.2344C52.8634 22.5469 52.4939 21.0469 51.7548 19.7344C51.0466 18.3906 50.0766 17.3437 48.8448 16.5937C47.6131 15.8125 46.212 15.4219 44.6416 15.4219C43.1019 15.4219 41.7008 15.8125 40.4383 16.5937C39.2065 17.3437 38.2365 18.3906 37.5283 19.7344C36.82 21.0469 36.4659 22.5469 36.4659 24.2344C36.4659 25.8906 36.82 27.3906 37.5283 28.7344C38.2365 30.0469 39.2065 31.0937 40.4383 31.875C41.7008 32.625 43.1019 33 44.6416 33Z"
-        fill={colors.label.normal}
-      />
-      <path
-        d="M74.9018 37.2187C72.3459 37.2187 70.0672 36.6719 68.0657 35.5781C66.0949 34.4531 64.5398 32.9219 63.4005 30.9844C62.2919 29.0156 61.7376 26.7656 61.7376 24.2344C61.7376 21.6719 62.2611 19.4219 63.3081 17.4844C64.3859 15.5156 65.8639 13.9844 67.7423 12.8906C69.6207 11.7656 71.7763 11.2031 74.2089 11.2031C76.6108 11.2031 78.674 11.75 80.3984 12.8437C82.1228 13.9062 83.4315 15.3906 84.3245 17.2969C85.2483 19.1719 85.7102 21.3438 85.7102 23.8125C85.7102 24.4063 85.5101 24.9063 85.1098 25.3125C84.7094 25.6875 84.2014 25.875 83.5855 25.875H64.9709V22.125H83.4469L81.5531 23.4375C81.5223 21.875 81.2144 20.4844 80.6293 19.2656C80.0443 18.0156 79.2128 17.0312 78.1351 16.3125C77.0573 15.5937 75.7486 15.2344 74.2089 15.2344C72.4537 15.2344 70.9448 15.625 69.6823 16.4062C68.4506 17.1875 67.5114 18.2656 66.8647 19.6406C66.2181 20.9844 65.8947 22.5156 65.8947 24.2344C65.8947 25.9531 66.2796 27.4844 67.0495 28.8281C67.8193 30.1719 68.8817 31.2344 70.2366 32.0156C71.5915 32.7969 73.1466 33.1875 74.9018 33.1875C75.8564 33.1875 76.8264 33.0156 77.8117 32.6719C78.8279 32.2969 79.644 31.875 80.2598 31.4062C80.7217 31.0625 81.2144 30.8906 81.7379 30.8906C82.2922 30.8594 82.7695 31.0156 83.1698 31.3594C83.6933 31.8281 83.9704 32.3437 84.0012 32.9062C84.032 33.4687 83.7857 33.9531 83.2622 34.3594C82.2152 35.2031 80.9065 35.8906 79.336 36.4219C77.7964 36.9531 76.3183 37.2187 74.9018 37.2187Z"
-        fill={colors.label.normal}
-      />
-      <path
-        d="M99.9627 37.2187C97.7148 37.2187 95.6979 36.6563 93.9118 35.5313C92.1258 34.375 90.7093 32.8281 89.6624 30.8906C88.6462 28.9219 88.1381 26.7031 88.1381 24.2344C88.1381 21.7656 88.6924 19.5469 89.8009 17.5781C90.9403 15.6094 92.4646 14.0625 94.3737 12.9375C96.3137 11.7813 98.4847 11.2031 100.887 11.2031C103.288 11.2031 105.444 11.7813 107.353 12.9375C109.262 14.0625 110.771 15.6094 111.88 17.5781C113.019 19.5469 113.589 21.7656 113.589 24.2344H111.787C111.787 26.7031 111.264 28.9219 110.217 30.8906C109.201 32.8281 107.8 34.375 106.014 35.5313C104.228 36.6563 102.211 37.2187 99.9627 37.2187ZM100.887 33C102.457 33 103.858 32.625 105.09 31.875C106.322 31.0937 107.292 30.0469 108 28.7344C108.708 27.3906 109.062 25.8906 109.062 24.2344C109.062 22.5469 108.708 21.0469 108 19.7344C107.292 18.3906 106.322 17.3437 105.09 16.5937C103.858 15.8125 102.457 15.4219 100.887 15.4219C99.3469 15.4219 97.9458 15.8125 96.6832 16.5937C95.4515 17.3437 94.4661 18.3906 93.7271 19.7344C93.0188 21.0469 92.6647 22.5469 92.6647 24.2344C92.6647 25.8906 93.0188 27.3906 93.7271 28.7344C94.4661 30.0469 95.4515 31.0937 96.6832 31.875C97.9458 32.625 99.3469 33 100.887 33ZM111.233 37.0781C110.556 37.0781 109.986 36.8594 109.524 36.4219C109.093 35.9531 108.877 35.375 108.877 34.6875V27.5156L109.755 22.5469L113.589 24.2344V34.6875C113.589 35.375 113.358 35.9531 112.896 36.4219C112.465 36.8594 111.911 37.0781 111.233 37.0781Z"
-        fill={colors.label.normal}
-      />
-      <path
-        d="M123.649 27.6562L120.785 24.4688L134.966 11.625C135.428 11.1875 135.936 10.9844 136.49 11.0156C137.075 11.0469 137.568 11.2969 137.968 11.7656C138.399 12.2344 138.599 12.75 138.569 13.3125C138.538 13.875 138.291 14.375 137.83 14.8125L123.649 27.6562ZM121.478 37.0313C120.801 37.0313 120.247 36.8281 119.815 36.4219C119.415 35.9844 119.215 35.4219 119.215 34.7344V2.71875C119.215 2.03125 119.415 1.48438 119.815 1.07813C120.247 0.640625 120.801 0.421875 121.478 0.421875C122.156 0.421875 122.695 0.640625 123.095 1.07813C123.526 1.48438 123.742 2.03125 123.742 2.71875V34.7344C123.742 35.4219 123.526 35.9844 123.095 36.4219C122.695 36.8281 122.156 37.0313 121.478 37.0313ZM137.968 36.7969C137.475 37.2031 136.921 37.375 136.305 37.3125C135.72 37.2813 135.227 37.0156 134.827 36.5156L125.451 24.75L128.684 21.6562L138.291 33.6562C138.692 34.1562 138.861 34.7031 138.8 35.2969C138.769 35.8594 138.492 36.3594 137.968 36.7969Z"
-        fill={colors.label.normal}
-      />
-      <path
-        d="M164.674 39.2347C162.213 39.2347 159.906 38.7664 157.752 37.8298C155.633 36.8586 153.753 35.5404 152.113 33.8754C150.472 32.1756 149.19 30.2331 148.267 28.0477C147.344 25.8276 146.883 23.4515 146.883 20.9192C146.883 18.3176 147.327 15.8894 148.216 13.6347C149.139 11.3452 150.386 9.35063 151.959 7.65089C153.565 5.91647 155.411 4.56362 157.496 3.59234C159.581 2.62107 161.82 2.13543 164.213 2.13543C166.708 2.13543 169.015 2.62107 171.135 3.59234C173.288 4.52893 175.168 5.84709 176.774 7.54683C178.381 9.24656 179.646 11.2238 180.569 13.4786C181.492 15.6986 181.953 18.1095 181.953 20.7111C181.953 23.2434 181.509 25.6369 180.62 27.8916C179.731 30.1117 178.484 32.0889 176.877 33.8233C175.271 35.5231 173.425 36.8586 171.34 37.8298C169.289 38.7664 167.067 39.2347 164.674 39.2347ZM164.418 32.8867C165.99 32.8867 167.46 32.5745 168.827 31.9502C170.195 31.3258 171.391 30.4586 172.416 29.3485C173.476 28.2385 174.296 26.955 174.877 25.4981C175.459 24.0065 175.749 22.4108 175.749 20.7111C175.749 19.0114 175.441 17.433 174.826 15.9761C174.245 14.4845 173.425 13.1837 172.365 12.0737C171.34 10.929 170.143 10.0444 168.776 9.42C167.443 8.79561 165.99 8.48342 164.418 8.48342C162.88 8.48342 161.427 8.79561 160.06 9.42C158.692 10.0444 157.479 10.929 156.419 12.0737C155.394 13.1837 154.591 14.4845 154.01 15.9761C153.428 17.4677 153.138 19.046 153.138 20.7111C153.138 22.3761 153.428 23.9545 154.01 25.4461C154.625 26.9377 155.445 28.2385 156.471 29.3485C157.496 30.4586 158.675 31.3258 160.008 31.9502C161.376 32.5745 162.846 32.8867 164.418 32.8867Z"
-        fill={colors.primary.normal}
-      />
-      <path
-        d="M188.287 38.7664C187.364 38.7664 186.681 38.6103 186.236 38.2981C185.826 38.0206 185.553 37.6391 185.416 37.1534C185.313 36.6678 185.262 36.1475 185.262 35.5924V5.41349C185.262 4.89316 185.33 4.40752 185.467 3.95657C185.604 3.50562 185.894 3.14139 186.339 2.86388C186.817 2.58638 187.518 2.44763 188.441 2.44763C189.466 2.44763 190.167 2.56903 190.543 2.81185C190.953 3.01998 191.329 3.33218 191.671 3.74844L208.796 28.0477V5.41349C208.796 4.89316 208.864 4.40752 209.001 3.95657C209.138 3.50562 209.428 3.14139 209.873 2.86388C210.317 2.58638 211.001 2.44763 211.924 2.44763C212.881 2.44763 213.564 2.60372 213.975 2.91592C214.419 3.19343 214.692 3.575 214.795 4.06064C214.932 4.54627 215 5.08395 215 5.67365V35.6445C215 36.1995 214.915 36.7198 214.744 37.2055C214.607 37.6564 214.299 38.0206 213.821 38.2981C213.376 38.6103 212.676 38.7664 211.719 38.7664C210.967 38.7664 210.368 38.6971 209.924 38.5583C209.514 38.4196 209.138 38.1247 208.796 37.6737L191.415 13.4265V35.6445C191.415 36.1995 191.346 36.7198 191.21 37.2055C191.107 37.6564 190.834 38.0206 190.389 38.2981C189.945 38.6103 189.244 38.7664 188.287 38.7664Z"
-        fill={colors.primary.normal}
-      />
-    </g>
-  </svg>
-);
+import React from 'react'
+import { TopNavBar } from '../components/ui/TopNavBar'
+import env from '../env'
 
 const GoogleIcon = () => (
   <svg width="16" height="16" viewBox="0 0 48 48" fill="none">
@@ -64,7 +21,7 @@ const GoogleIcon = () => (
       fill="#EA4335"
     />
   </svg>
-);
+)
 
 const NaverIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -73,169 +30,102 @@ const NaverIcon = () => (
       fill="#00C566"
     />
   </svg>
-);
+)
 
 interface LoginButtonProps {
-  icon: React.ReactNode;
-  text: string;
-  onClick?: () => void;
+  icon: React.ReactNode
+  text: string
+  onClick?: () => void
 }
 
 const LoginButton: React.FC<LoginButtonProps> = ({ icon, text, onClick }) => (
   <button
+    type="button"
     onClick={onClick}
-    style={{
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '20px',
-      padding: '10px 20px',
-      width: '100%',
-      height: '50px',
-      backgroundColor: colors.static.white,
-      border: `1px solid ${colors.fill.neutral}`,
-      borderRadius: '10px',
-      cursor: 'pointer',
-      ...typography.button[1],
-      color: colors.label.normal,
-    }}
+    className="flex h-[50px] w-full items-center justify-center gap-5 rounded-[10px] border border-ssu-muted/40 bg-ssu-background text-[16px] font-medium text-ssu-text transition-colors hover:border-ssu-primary hover:bg-ssu-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ssu-primary/30"
   >
-    <div style={{ width: '16px', height: '16px', flexShrink: 0 }}>
-      {icon}
-    </div>
-    <span>{text}</span>
+    <span className="flex h-4 w-4 items-center justify-center">{icon}</span>
+    <span className="whitespace-nowrap">{text}</span>
   </button>
-);
+)
 
 export const LoginPage: React.FC = () => {
   const handleGoogleLogin = () => {
-    const clientId = env.VITE_GOOGLE_CLIENT_ID;
-    const redirectUri = env.VITE_GOOGLE_REDIRECT_URI || window.location.origin + '/auth/callback';
+    const clientId = env.VITE_GOOGLE_CLIENT_ID
+    const redirectUri =
+      env.VITE_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/callback`
 
     if (!clientId) {
-      console.error('Google Client ID가 설정되지 않았습니다.');
-      return;
+      console.error('Google Client ID가 설정되지 않았습니다.')
+      return
     }
 
-    // Google OAuth 2.0 인증 URL 생성
-    const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
-    authUrl.searchParams.append('client_id', clientId);
-    authUrl.searchParams.append('redirect_uri', redirectUri);
-    authUrl.searchParams.append('response_type', 'code');
-    authUrl.searchParams.append('scope', 'openid email profile');
-    authUrl.searchParams.append('access_type', 'offline');
-    authUrl.searchParams.append('prompt', 'consent');
+    const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth')
+    authUrl.searchParams.append('client_id', clientId)
+    authUrl.searchParams.append('redirect_uri', redirectUri)
+    authUrl.searchParams.append('response_type', 'code')
+    authUrl.searchParams.append('scope', 'openid email profile')
+    authUrl.searchParams.append('access_type', 'offline')
+    authUrl.searchParams.append('prompt', 'consent')
 
-    // Google 로그인 페이지로 리다이렉트
-    window.location.href = authUrl.toString();
-  };
+    window.location.href = authUrl.toString()
+  }
 
   const handleNaverLogin = () => {
-    const clientId = env.VITE_NAVER_CLIENT_ID;
-    const redirectUri = env.VITE_NAVER_REDIRECT_URI || window.location.origin + '/auth/callback/naver';
-
-    
+    const clientId = env.VITE_NAVER_CLIENT_ID
+    const redirectUri =
+      env.VITE_NAVER_REDIRECT_URI || `${window.location.origin}/auth/callback/naver`
 
     if (!clientId) {
-      console.error('Naver Client ID가 설정되지 않았습니다.');
-      return;
+      console.error('Naver Client ID가 설정되지 않았습니다.')
+      return
     }
 
-    // 간단한 state 생성 (실제로는 더 복잡한 랜덤 문자열 생성 권장)
-    const state = Math.random().toString(36).substring(2, 15);
-    sessionStorage.setItem('naver_oauth_state', state);
+    const state = Math.random().toString(36).substring(2, 15)
+    sessionStorage.setItem('naver_oauth_state', state)
 
-    // Naver OAuth 2.0 인증 URL 생성
-    const authUrl = new URL('https://nid.naver.com/oauth2.0/authorize');
-    authUrl.searchParams.append('response_type', 'code');
-    authUrl.searchParams.append('client_id', clientId);
-    authUrl.searchParams.append('redirect_uri', redirectUri);
-    authUrl.searchParams.append('state', state);
+    const authUrl = new URL('https://nid.naver.com/oauth2.0/authorize')
+    authUrl.searchParams.append('response_type', 'code')
+    authUrl.searchParams.append('client_id', clientId)
+    authUrl.searchParams.append('redirect_uri', redirectUri)
+    authUrl.searchParams.append('state', state)
 
-    
-
-    // Naver 로그인 페이지로 리다이렉트
-    window.location.href = authUrl.toString();
-  };
+    window.location.href = authUrl.toString()
+  }
 
   return (
     <>
       <TopNavBar />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '56px',
-          padding: '0',
-          width: '100%',
-          height: 'calc(100vh - 60px)',
-          backgroundColor: colors.background.normal,
-        }}
-      >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          gap: '16px',
-          width: '100%',
-          maxWidth: '400px',
-          padding: '0 20px',
-        }}
-      >
-        <div style={{ width: '215px', height: '48px' }}>
-          <SSUTimeLogo />
+      <div className="flex h-[calc(100vh-60px)] w-full flex-col items-center justify-center gap-14 bg-ssu-background">
+        <div className="flex w-full max-w-[400px] flex-col items-center gap-4 px-5">
+          <img
+            src="/logo.svg"
+            alt="SSU Time 로고"
+            className="h-12 w-[215px]"
+            loading="lazy"
+          />
+          <div className="flex w-full flex-col items-center gap-[17px] text-center">
+            <h1 className="text-[22px] font-semibold leading-[22px] text-ssu-text">
+              발표 준비, 여기서 한 번에 끝내세요
+            </h1>
+            <p className="text-sm text-ssu-muted">
+              SSU Time과 함께 발표 자료 업로드부터 연습, 결과 공유까지 편리하게 진행해 보세요.
+            </p>
+          </div>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '17px',
-            width: '100%',
-          }}
-        >
-          <h1
-            style={{
-              ...typography.title[1],
-              color: colors.label.normal,
-              margin: 0,
-              textAlign: 'center',
-            }}
-          >
-            발표 준비, 여기서 한 번에 끝내세요
-          </h1>
+        <div className="flex w-full max-w-[400px] flex-col items-stretch gap-4 px-5">
+          <LoginButton
+            icon={<GoogleIcon />}
+            text="구글로 로그인하기"
+            onClick={handleGoogleLogin}
+          />
+          <LoginButton
+            icon={<NaverIcon />}
+            text="네이버로 로그인하기"
+            onClick={handleNaverLogin}
+          />
         </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'flex-start',
-          gap: '16px',
-          width: '100%',
-          maxWidth: '400px',
-          padding: '0 20px',
-        }}
-      >
-        <LoginButton
-          icon={<GoogleIcon />}
-          text="구글로 로그인하기"
-          onClick={handleGoogleLogin}
-        />
-        <LoginButton
-          icon={<NaverIcon />}
-          text="네이버로 로그인하기"
-          onClick={handleNaverLogin}
-        />
-      </div>
       </div>
     </>
-  );
-};
+  )
+}
