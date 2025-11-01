@@ -19,7 +19,7 @@ final class SelectableTagView: UIView {
 
     // MARK: - UI
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+        let layout = LeftAlignedFlowLayout()
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 8
         layout.scrollDirection = .vertical
@@ -101,7 +101,8 @@ extension SelectableTagView: UICollectionViewDelegate, UICollectionViewDataSourc
         } else {
             selectedItems.insert(tag)
         }
-        collectionView.reloadItems(at: [indexPath])
+
+        collectionView.reloadData()
         onSelectionChanged?(Array(selectedItems))
     }
 
