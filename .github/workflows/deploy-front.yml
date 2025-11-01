@@ -3,14 +3,14 @@ name: Deploy Frontend to S3 and CloudFront
 on:
   push:
     branches:
-      - main # 'main' 브랜치에 푸시될 때 실행
+      - main
     paths:
       - 'frontend/**'
-  workflow_dispatch: # 수동 실행 옵션
+  workflow_dispatch:
 
 permissions:
-  id-token: write # OIDC를 위해 필요
-  contents: read # 코드 체크아웃을 위해 필요
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
