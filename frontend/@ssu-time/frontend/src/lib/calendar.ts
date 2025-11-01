@@ -13,8 +13,10 @@ const getIcsFileName = () => {
 
 export const getAppleCalendarUrl = (): string => toWebcalScheme(ICS_FILE_URL)
 
-export const getGoogleCalendarUrl = (): string =>
-  `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(ICS_FILE_URL)}`
+export const getGoogleCalendarUrl = (): string => {
+  const cid = encodeURIComponent(toWebcalScheme(ICS_FILE_URL))
+  return `https://calendar.google.com/calendar/u/0/r?cid=${cid}`
+}
 
 export const downloadIcsFile = async (): Promise<void> => {
   const response = await fetch(ICS_FILE_URL)
