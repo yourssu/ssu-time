@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Yourssu-Calendar"
+rootProject.name = "SSU Time"
 include(":app")
  
