@@ -6,7 +6,7 @@ export type StoredFileMeta = {
   uploadedAt: number; // epoch ms
 };
 
-const STORAGE_KEY = 'speakon.files';
+const STORAGE_KEY = 'ssu-time.files';
 
 function readAll(): StoredFileMeta[] {
   try {
@@ -91,5 +91,4 @@ export function upsertFile(meta: { name: string; size: number; pageCount?: numbe
   writeAll(files);
   return created;
 }
-
 

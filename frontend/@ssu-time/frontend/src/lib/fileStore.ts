@@ -9,7 +9,7 @@ type StoredRecord = {
   lastModified: number
 }
 
-const DB_NAME = 'speakon-db'
+const DB_NAME = 'ssu-time-db'
 const STORE_NAME = 'files'
 const DB_VERSION = 1
 
@@ -72,5 +72,4 @@ export async function deleteFileBlob(id: string): Promise<void> {
     tx.onerror = () => reject(tx.error)
   })
 }
-
 

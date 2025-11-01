@@ -21,7 +21,7 @@ export function Footer() {
           whiteSpace: 'nowrap',
         }}
       >
-        SpeakOn
+        SSU Time
       </p>
       <div
         style={{
@@ -36,7 +36,7 @@ export function Footer() {
         }}
       >
         <a
-          href="https://dented-wanderer-019.notion.site/SpeakON-1f09f456eea580339af3e9c213002e86"
+          href="https://ssu-time.notion.site/terms"
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -49,7 +49,7 @@ export function Footer() {
           이용약관
         </a>
         <a
-          href="https://dented-wanderer-019.notion.site/SpeakON-2839f456eea58014a511ecf08224e0e3"
+          href="https://ssu-time.notion.site/privacy"
           target="_blank"
           rel="noopener noreferrer"
           style={{
