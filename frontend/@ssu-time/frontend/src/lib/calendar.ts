@@ -18,6 +18,11 @@ export const getGoogleCalendarUrl = (): string => {
   return `https://calendar.google.com/calendar/u/0/r?cid=${cid}`
 }
 
+export const getGoogleCalendarIntentUrl = (): string => {
+  const cid = encodeURIComponent(toWebcalScheme(ICS_FILE_URL))
+  return `intent://calendar.google.com/calendar/u/0/r?cid=${cid}#Intent;scheme=https;package=com.google.android.calendar;end`
+}
+
 export const downloadIcsFile = async (): Promise<void> => {
   const response = await fetch(ICS_FILE_URL)
   if (!response.ok) {
