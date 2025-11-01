@@ -2,6 +2,7 @@ import asyncio
 import logging
 from datetime import datetime
 from typing import List
+import json
 
 from config import DEFAULT_CRAWLER_CONFIG
 from crawler.scraper import run_single_crawler
@@ -38,11 +39,16 @@ async def main():
     with open('scholarships.ics', 'w', encoding='utf-8') as f:
         f.write(merged)
 
-    # 날짜 미탐지 목록 저장
+    # 날짜 미탐지 목록 저장 (JSON 배열)
     if misses:
-        with open('missing_dates.txt', 'w', encoding='utf-8') as f:
-            for m in misses:
-                f.write(f"{m['title']} & 날짜를 확인할 수 없습니다 & {m['url']}\n")
+        with open('missing_dates.json', 'w', encoding='utf-8') as f:
+            json.dump([
+                {
+                    'title': m.get('title'),
+                    'url': m.get('url'),
+                    'reason': m.get('message') or '날짜를 확인할 수 없습니다',
+                } for m in misses
+            ], f, ensure_ascii=False, indent=2)
     elapsed = (datetime.now() - start).total_seconds()
     logger.info("🎉 모든 작업 완료!")
     logger.info(f"⏱ 총 소요 시간: {elapsed:.2f}초")
