@@ -25,6 +25,7 @@
 		E5CBB75F2EB5EBD000AA5996 /* ToggleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB75E2EB5EBD000AA5996 /* ToggleRowView.swift */; };
 		E5CBB7692EB5EFCE00AA5996 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7682EB5EFCE00AA5996 /* TagCell.swift */; };
 		E5CBB76B2EB5F17100AA5996 /* SelectableTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB76A2EB5F17100AA5996 /* SelectableTagView.swift */; };
+		E5CBB7A12EB5FA2300AA5996 /* DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7A02EB5FA2300AA5996 /* DTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,12 @@
 		E5CBB75E2EB5EBD000AA5996 /* ToggleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleRowView.swift; sourceTree = "<group>"; };
 		E5CBB7682EB5EFCE00AA5996 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 		E5CBB76A2EB5F17100AA5996 /* SelectableTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableTagView.swift; sourceTree = "<group>"; };
+		E5CBB7702EB5F99D00AA5996 /* NetworkResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResult.swift; sourceTree = "<group>"; };
+		E5CBB7712EB5F99D00AA5996 /* GenericResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericResponse.swift; sourceTree = "<group>"; };
+		E5CBB7722EB5F99D00AA5996 /* BaseTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTargetType.swift; sourceTree = "<group>"; };
+		E5CBB7742EB5F99D00AA5996 /* MoyaLoggerPluggin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyaLoggerPluggin.swift; sourceTree = "<group>"; };
+		E5CBB7812EB5F99D00AA5996 /* MyPageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageAPI.swift; sourceTree = "<group>"; };
+		E5CBB7A02EB5FA2300AA5996 /* DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +145,7 @@
 		E5CBB7482EB5E89B00AA5996 /* SSUTime */ = {
 			isa = PBXGroup;
 			children = (
+				E5CBB79F2EB5F99D00AA5996 /* Network  */,
 				E5CBB7512EB5EA6500AA5996 /* Application */,
 				E5CBB7502EB5EA5700AA5996 /* Features */,
 				E5CBB7522EB5EACA00AA5996 /* Global */,
@@ -206,6 +214,59 @@
 				E5CBB76A2EB5F17100AA5996 /* SelectableTagView.swift */,
 			);
 			path = TagView;
+			sourceTree = "<group>";
+		};
+		E5CBB7732EB5F99D00AA5996 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				E5CBB7702EB5F99D00AA5996 /* NetworkResult.swift */,
+				E5CBB7712EB5F99D00AA5996 /* GenericResponse.swift */,
+				E5CBB7722EB5F99D00AA5996 /* BaseTargetType.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		E5CBB7752EB5F99D00AA5996 /* MoyaPluggin */ = {
+			isa = PBXGroup;
+			children = (
+				E5CBB7742EB5F99D00AA5996 /* MoyaLoggerPluggin.swift */,
+			);
+			path = MoyaPluggin;
+			sourceTree = "<group>";
+		};
+		E5CBB7762EB5F99D00AA5996 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				E5CBB7732EB5F99D00AA5996 /* Foundation */,
+				E5CBB7752EB5F99D00AA5996 /* MoyaPluggin */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		E5CBB7822EB5F99D00AA5996 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				E5CBB7812EB5F99D00AA5996 /* MyPageAPI.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		E5CBB79E2EB5F99D00AA5996 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				E5CBB7A02EB5FA2300AA5996 /* DTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		E5CBB79F2EB5F99D00AA5996 /* Network  */ = {
+			isa = PBXGroup;
+			children = (
+				E5CBB7762EB5F99D00AA5996 /* Common */,
+				E5CBB7822EB5F99D00AA5996 /* API */,
+				E5CBB79E2EB5F99D00AA5996 /* DTO */,
+			);
+			path = "Network ";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -333,6 +394,7 @@
 				E5CBB7492EB5E89B00AA5996 /* AppDelegate.swift in Sources */,
 				E5CBB7562EB5EB0E00AA5996 /* UiView+.swift in Sources */,
 				E5CBB7692EB5EFCE00AA5996 /* TagCell.swift in Sources */,
+				E5CBB7A12EB5FA2300AA5996 /* DTO.swift in Sources */,
 				E5CBB74A2EB5E89B00AA5996 /* SceneDelegate.swift in Sources */,
 				E5CBB76B2EB5F17100AA5996 /* SelectableTagView.swift in Sources */,
 				E5CBB75F2EB5EBD000AA5996 /* ToggleRowView.swift in Sources */,
