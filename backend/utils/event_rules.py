@@ -29,7 +29,8 @@ def extract_foundation_name(raw_title: str) -> str:
 
 
 def _is_application_label(label: str) -> bool:
-    return bool(re.search(r'(신청|접수|모집|추천)', label))
+    # 신청성 일정 분류 키워드 확대: 제출 포함
+    return bool(re.search(r'(신청|접수|모집|추천|제출)', label))
 
 
 def build_events_from_schedule_item(
