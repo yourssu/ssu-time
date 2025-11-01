@@ -1,12 +1,14 @@
 package com.yourssu
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,6 +26,9 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI
 import com.yourssu.BuildConfig
 import com.yourssu.notification.channelID
 import com.yourssu.notification.sendNotification
+import android.util.Log
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import com.yourssu.ui.theme.YourssuCalendarTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,6 +40,8 @@ import java.net.URL
 
 class MainActivity : ComponentActivity() {
 
+    private val TAG = "MainActivity"
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +51,19 @@ class MainActivity : ComponentActivity() {
         val mixpanelToken = if (BuildConfig.DEBUG) BuildConfig.MIXPANEL_DEV_TOKEN else BuildConfig.MIXPANEL_PROD_TOKEN
         val mixpanel = MixpanelAPI.getInstance(this, mixpanelToken, false)
 
+        Firebase.messaging.token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            Log.d(TAG, "FCM Registration Token: $token")
+        }
+
         createNotificationChannel()
 
         setContent {
@@ -52,7 +72,7 @@ class MainActivity : ComponentActivity() {
                     SelectCalendar(
                         listOf("장학", "총학생회", "단과대", "유세인트", "컴퓨터학부", "글로벌미디어학부", "소프트웨어학부", "AI융합학부"),
                         onLoadCalendar = {
-                            val googleCalendarUri = "https://calendar.google.com/calendar/u/0/render?cid=13bd5bb3954acee3aae039b9adb95c876e6f4b6bdeeb713e913633577a3d3662%40group.calendar.google.com".toUri()
+                            val googleCalendarUri = "https://calendar.google.com/calendar/r?cid=env952lm2uhd4fkid9qe6l07q1d9nd16@import.calendar.google.com".toUri()
                             val intent = Intent(Intent.ACTION_VIEW, googleCalendarUri)
                             if (intent.resolveActivity(packageManager) != null) {
                                 startActivity(intent)
@@ -88,26 +108,11 @@ class MainActivity : ComponentActivity() {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val mChannel = NotificationChannel(channelID, name, importance)
             mChannel.description = descriptionText
+
             // Register the channel with the system. You can't change the importance
             // or other notification behaviors after this.
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(mChannel)
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    YourssuCalendarTheme {
-        Greeting("Android")
     }
 }
