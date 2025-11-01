@@ -1,29 +1,49 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
-  buildGoogleCalendarUrl,
   detectPlatform,
-  ssuTimeLaunchEvent,
-  triggerIcsDownload,
+  downloadIcsFile,
+  getAppleCalendarUrl,
+  getGoogleCalendarUrl,
 } from '../lib/calendar'
 
 type Platform = 'ios' | 'android' | 'other'
 
 const buttonBase =
-  'inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2'
+  'inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60'
 
 const primaryButton = `${buttonBase} bg-ssu-primary text-white hover:bg-ssu-primary-dark focus-visible:outline-ssu-primary`
 const secondaryButton = `${buttonBase} border border-ssu-muted/40 text-ssu-text hover:border-ssu-primary hover:text-ssu-primary focus-visible:outline-ssu-primary`
 
 export function CalendarExportSection() {
   const [platform, setPlatform] = useState<Platform>('other')
-  const googleCalendarUrl = useMemo(() => buildGoogleCalendarUrl(ssuTimeLaunchEvent), [])
+  const [isProcessing, setIsProcessing] = useState(false)
+
+  const appleCalendarUrl = useMemo(() => getAppleCalendarUrl(), [])
+  const httpsFallbackUrl = useMemo(
+    () => appleCalendarUrl.replace(/^webcal:/i, 'https:'),
+    [appleCalendarUrl],
+  )
+  const googleCalendarUrl = useMemo(() => getGoogleCalendarUrl(), [])
 
   useEffect(() => {
     setPlatform(detectPlatform())
   }, [])
 
-  const handleAppleCalendar = () => {
-    triggerIcsDownload(ssuTimeLaunchEvent)
+  const handleAppleCalendar = async () => {
+    if (platform === 'ios') {
+      window.location.href = appleCalendarUrl
+      return
+    }
+
+    try {
+      setIsProcessing(true)
+      await downloadIcsFile()
+    } catch (error) {
+      console.error('ICS 파일 다운로드 실패', error)
+      window.open(httpsFallbackUrl, '_blank', 'noopener')
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   const renderButtons = () => {
@@ -43,8 +63,13 @@ export function CalendarExportSection() {
       default:
         return (
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <button type="button" className={primaryButton} onClick={handleAppleCalendar}>
-              애플 캘린더(.ics)
+            <button
+              type="button"
+              className={primaryButton}
+              onClick={handleAppleCalendar}
+              disabled={isProcessing}
+            >
+              {isProcessing ? '다운로드 중…' : '애플 캘린더(.ics)'}
             </button>
             <a className={secondaryButton} href={googleCalendarUrl} target="_blank" rel="noreferrer">
               구글 캘린더 열기

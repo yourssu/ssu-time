@@ -1,111 +1,39 @@
-export type CalendarEvent = {
-  title: string
-  description?: string
-  location?: string
-  start: string
-  end: string
+const ICS_FILE_URL = 'https://seyeona-ha.github.io/ssu-calendar/ssu_2025_09.ics'
+
+const toWebcalScheme = (url: string): string => url.replace(/^https?:/i, 'webcal:')
+
+const getIcsFileName = () => {
+  try {
+    const fromUrl = decodeURIComponent(new URL(ICS_FILE_URL).pathname.split('/').pop() ?? '')
+    return fromUrl || 'ssu-calendar.ics'
+  } catch {
+    return 'ssu-calendar.ics'
+  }
 }
 
-export const ssuTimeLaunchEvent: CalendarEvent = {
-  title: 'SSU Time 베타 오픈',
-  description:
-    'SSU Time 베타 서비스 사전 등록 알림입니다.\n신청 후 안내 드린 링크에서 업데이트 소식을 확인하세요.',
-  location: '숭실대학교',
-  start: '2025-03-01T09:00:00+09:00',
-  end: '2025-03-01T10:00:00+09:00',
-}
+export const getAppleCalendarUrl = (): string => toWebcalScheme(ICS_FILE_URL)
 
-const ICS_LINE_BREAK = '\r\n'
+export const getGoogleCalendarUrl = (): string =>
+  `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(ICS_FILE_URL)}`
 
-const escapeIcsText = (value: string): string =>
-  value
-    .replace(/\\/g, '\\\\')
-    .replace(/\n/g, '\\n')
-    .replace(/,/g, '\\,')
-    .replace(/;/g, '\\;')
+export const downloadIcsFile = async (): Promise<void> => {
+  const response = await fetch(ICS_FILE_URL)
+  if (!response.ok) {
+    throw new Error(`ICS 파일을 가져오지 못했습니다. (status: ${response.status})`)
+  }
 
-const formatAsUtc = (isoString: string): string => {
-  const date = new Date(isoString)
-  return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
-}
-
-const buildIcsContent = (event: CalendarEvent): string => {
-  const dtStamp = formatAsUtc(new Date().toISOString())
-  const dtStart = formatAsUtc(event.start)
-  const dtEnd = formatAsUtc(event.end)
-  const uid =
-    typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : dtStamp
-
-  const lines = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//SSU Time//Calendar Export//KO',
-    'CALSCALE:GREGORIAN',
-    'METHOD:PUBLISH',
-    'BEGIN:VEVENT',
-    `UID:${uid}`,
-    `DTSTAMP:${dtStamp}`,
-    `DTSTART:${dtStart}`,
-    `DTEND:${dtEnd}`,
-    `SUMMARY:${escapeIcsText(event.title)}`,
-    event.description ? `DESCRIPTION:${escapeIcsText(event.description)}` : '',
-    event.location ? `LOCATION:${escapeIcsText(event.location)}` : '',
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ].filter(Boolean)
-
-  return lines.join(ICS_LINE_BREAK)
-}
-
-const buildFileName = (title: string): string =>
-  `${title
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '') || 'event'}.ics`
-
-export const triggerIcsDownload = (event: CalendarEvent) => {
-  const blob = new Blob([buildIcsContent(event)], {
-    type: 'text/calendar;charset=utf-8',
-  })
-  const url = URL.createObjectURL(blob)
+  const blob = await response.blob()
+  const objectUrl = URL.createObjectURL(blob)
   const link = document.createElement('a')
 
-  link.href = url
-  link.download = buildFileName(event.title)
+  link.href = objectUrl
+  link.download = getIcsFileName()
 
-  // iOS Safari ignores the download attribute: fall back to opening the blob URL.
-  if (/iP(ad|hone|od)/.test(navigator.userAgent)) {
-    window.location.href = url
-  } else {
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
 
-  setTimeout(() => {
-    URL.revokeObjectURL(url)
-  }, 0)
-}
-
-export const buildGoogleCalendarUrl = (event: CalendarEvent): string => {
-  const start = formatAsUtc(event.start)
-  const end = formatAsUtc(event.end)
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: event.title,
-    dates: `${start}/${end}`,
-  })
-
-  if (event.description) {
-    params.set('details', event.description)
-  }
-
-  if (event.location) {
-    params.set('location', event.location)
-  }
-
-  return `https://calendar.google.com/calendar/render?${params.toString()}`
+  URL.revokeObjectURL(objectUrl)
 }
 
 export const detectPlatform = (): 'ios' | 'android' | 'other' => {
