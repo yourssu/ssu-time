@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Tuple
 
 from ics import Calendar, Event
@@ -16,36 +16,36 @@ def build_ics_from_events(events: List[dict]) -> str:
         if not dates:
             continue
 
-        start = datetime(dates[0][0], dates[0][1], dates[0][2])
-        end = datetime(dates[-1][0], dates[-1][1], dates[-1][2])
+        # 표준 시간: 09:00Z 시작, 10:00Z 종료
+        start = datetime(dates[0][0], dates[0][1], dates[0][2], 9, 0, 0, tzinfo=timezone.utc)
+        end = datetime(dates[-1][0], dates[-1][1], dates[-1][2], 10, 0, 0, tzinfo=timezone.utc)
 
         e = Event()
         e.name = ev['title']
         e.begin = start
         e.end = end
-        e.make_all_day()
+        # DTSTAMP/UID/CATEGORIES
+        try:
+            e.uid = f"{__import__('uuid').uuid4()}@yourssu.com"
+        except Exception:
+            pass
+        try:
+            e.created = datetime.now(timezone.utc)
+        except Exception:
+            pass
         if 'url' in ev and ev['url']:
             try:
                 e.url = ev['url']
             except Exception:
                 pass
-        if 'tags' in ev and ev['tags']:
-            try:
-                e.categories = set(ev['tags'])
-            except Exception:
-                pass
+        # 카테고리: 우선 이벤트 태그 사용, 없으면 '장학형'
+        try:
+            tags = ev.get('tags') or ['장학형']
+            e.categories = set(tags)
+        except Exception:
+            pass
 
-        # 설명용 날짜는 통일된 형식(YYYY-MM-DD)로 표기
-        date_info = " ~ ".join([f"{y:04d}-{m:02d}-{d:02d}" for y, m, d in dates])
-        parts = [
-            f"제목: {ev['title']}",
-            f"기한: {date_info}",
-        ]
-        if 'url' in ev and ev['url']:
-            parts.append(f"링크: {ev['url']}")
-        if 'tags' in ev and ev['tags']:
-            parts.append(f"태그: {', '.join(ev['tags'])}")
-        e.description = "\n".join(parts)
+        # DESCRIPTION 미사용 (요청사항)
 
         cal.events.add(e)
 

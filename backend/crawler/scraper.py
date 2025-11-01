@@ -95,15 +95,26 @@ def extract_schedule_items_from_soup(
     text_nodes = root.find_all(string=lambda s: isinstance(s, str) and has_any_pattern(s))
     parents = []
     seen = set()
+    BLOCK_TAGS = {"p", "li", "div", "section", "article"}
     for t in text_nodes:
-        el = t.parent if hasattr(t, 'parent') else None
-        if not el:
+        node = t.parent if hasattr(t, 'parent') else None
+        if not node:
             continue
-        key = id(el)
+        # 인라인 태그(b, span 등)에서 블록 조상으로 상승
+        cur = node
+        chosen = node
+        while cur and hasattr(cur, 'name'):
+            if cur.name in BLOCK_TAGS:
+                chosen = cur
+                break
+            cur = getattr(cur, 'parent', None)
+            if cur is None or cur == root:
+                break
+        key = id(chosen)
         if key in seen:
             continue
         seen.add(key)
-        parents.append(el)
+        parents.append(chosen)
 
     logger.debug(f"    🔍 날짜 텍스트 포함 부모 요소 {len(parents)}개")
 
@@ -233,9 +244,9 @@ async def run_single_crawler(config: dict) -> dict:
                 continue
             for label, dates in items:
                 final_list = build_events_from_schedule_item(foundation, label, dates, url_)
-                # 태그 주입: 장학금
+                # 태그 주입: 장학형
                 for ev in final_list:
-                    ev['tags'] = ['장학금']
+                    ev['tags'] = ['장학형']
                 events.extend(final_list)
 
         return {'events': events, 'misses': misses}

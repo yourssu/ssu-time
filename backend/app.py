@@ -22,18 +22,6 @@ async def run_many_crawlers_and_generate_ics(crawler_configs: List[dict]) -> tup
     return build_ics_from_events(all_events), all_misses
 
 
-def lambda_handler(event, context):
-    """AWS Lambda 핸들러: event에 'crawlers' 배열(optional)을 허용.
-    반환값: ICS 문자열"""
-    crawlers = []
-    if isinstance(event, dict):
-        crawlers = event.get('crawlers') or []
-    if not crawlers:
-        crawlers = [DEFAULT_CRAWLER_CONFIG]
-    ics_text, _ = asyncio.run(run_many_crawlers_and_generate_ics(crawlers))
-    return ics_text
-
-
 async def main():
     logger.info("🚀 함수 기반 파이프라인 시작")
     start = datetime.now()
