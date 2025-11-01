@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import clsx from 'clsx'
 
 interface LoginButtonProps {
   width?: number
@@ -7,62 +8,44 @@ interface LoginButtonProps {
   className?: string
   style?: React.CSSProperties
   onClick?: () => void
+  children?: React.ReactNode
 }
 
 export const LoginButton: React.FC<LoginButtonProps> = ({
   width,
-  height,
-  className = '',
+  height = 30,
+  className,
   style,
-  onClick
+  onClick,
+  children = '로그인',
 }) => {
   const navigate = useNavigate()
 
   const handleClick = () => {
     if (onClick) {
       onClick()
-    } else {
-      navigate('/login')
+      return
     }
+    navigate('/login')
   }
+
   return (
     <button
-      className={`login-button ${className}`}
-      style={{
-        ...(width && { width: `${width}px` }),
-          height: '30px',
-        ...(height && { height: `${height}px` }),
-        backgroundColor: '#3282FF',
-        color: '#FFFFFF',
-        border: 'none',
-        borderRadius: '8px',
-        fontSize: '13px',
-        fontWeight: 500,
-        fontFamily: 'Pretendard, sans-serif',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'background-color 0.2s ease',
-        outline: 'none',
-        padding: '7px 15px',
-        ...style
-      }}
+      type="button"
       onClick={handleClick}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = '#2563eb'
+      style={{
+        ...(width ? { width: `${width}px` } : {}),
+        height: `${height}px`,
+        ...style,
       }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = '#3282FF'
-      }}
-      onMouseDown={(e) => {
-        e.currentTarget.style.backgroundColor = '#2563eb'
-      }}
-      onMouseUp={(e) => {
-        e.currentTarget.style.backgroundColor = '#3282FF'
-      }}
+      className={clsx(
+        'flex items-center justify-center gap-2 rounded-lg px-4',
+        'bg-ssu-primary text-[13px] font-medium text-white transition-colors',
+        'hover:bg-ssu-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ssu-primary/30',
+        className,
+      )}
     >
-      로그인
+      {children}
     </button>
   )
-} 
+}

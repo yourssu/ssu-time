@@ -1,70 +1,48 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAtom } from 'jotai';
-import { isLoggedInAtom, userAtom } from '../../atoms/auth';
-import { colors } from '../../theme/colors';
-import { typography } from '../../theme/typography';
-import * as scriptStorage from '../../lib/scriptStorage';
-import * as boardStorage from '../../lib/boardStorage';
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAtom } from 'jotai'
+import clsx from 'clsx'
+import { isLoggedInAtom, userAtom } from '../../atoms/auth'
+import * as scriptStorage from '../../lib/scriptStorage'
+import * as boardStorage from '../../lib/boardStorage'
 
 export interface LogoutButtonProps {
-  onClick?: () => void;
+  onClick?: () => void
+  className?: string
 }
 
-export const LogoutButton: React.FC<LogoutButtonProps> = ({ onClick }) => {
-  const navigate = useNavigate();
-  const [, setIsLoggedIn] = useAtom(isLoggedInAtom);
-  const [, setUser] = useAtom(userAtom);
+export const LogoutButton: React.FC<LogoutButtonProps> = ({ onClick, className }) => {
+  const navigate = useNavigate()
+  const [, setIsLoggedIn] = useAtom(isLoggedInAtom)
+  const [, setUser] = useAtom(userAtom)
 
   const handleLogout = () => {
-    // 로그인 상태 초기화
-    setIsLoggedIn(false);
-    setUser(null);
+    setIsLoggedIn(false)
+    setUser(null)
 
-    // 로컬스토리지 정리
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    scriptStorage.clearAll();
-    boardStorage.clearAll();
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    scriptStorage.clearAll()
+    boardStorage.clearAll()
 
-    onClick?.();
+    onClick?.()
 
-    // 초기화면으로 이동 (강제 재렌더링)
-    navigate('/', { replace: true });
-    window.location.reload();
-  };
+    navigate('/', { replace: true })
+    window.location.reload()
+  }
 
   return (
     <button
+      type="button"
       onClick={handleLogout}
-      style={{
-        display: 'flex',
-        padding: '0 15px',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '20px',
-        borderRadius: '8px',
-        background: colors.fill.normal,
-        border: 'none',
-        cursor: 'pointer',
-        fontFamily: typography.button[2].fontFamily,
-        fontWeight: typography.button[2].fontWeight,
-        fontSize: typography.button[2].fontSize,
-        lineHeight: typography.button[2].lineHeight,
-        color: colors.primary.normal,
-        whiteSpace: 'nowrap',
-        transition: 'all 0.2s ease',
-        outline: 'none',
-        height: '30px',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = colors.fill.strong;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = colors.fill.normal;
-      }}
+      className={clsx(
+        'flex h-[30px] items-center justify-center gap-4 rounded-lg px-4',
+        'border border-transparent bg-ssu-background text-[13px] font-medium text-ssu-primary transition-colors',
+        'hover:bg-ssu-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ssu-primary/30',
+        className,
+      )}
     >
       로그아웃
     </button>
-  );
-};
+  )
+}
