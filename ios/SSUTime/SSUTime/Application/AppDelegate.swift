@@ -6,31 +6,79 @@
 //
 
 import UIKit
+import FirebaseCore
+import FirebaseMessaging
+
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        setupFCM(application)
 
+        // ✅ 테스트용: FCM 토큰 직접 출력 (앱 실행 직후)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            Messaging.messaging().token { token, error in
+                if let error = error {
+                    print("❌ FCM 토큰 가져오기 실패:", error.localizedDescription)
+                } else if let token = token {
+                    print("✅ [실행 직후 현재 FCM 토큰]:", token)
+                } else {
+                    print("⚠️ FCM 토큰이 아직 생성되지 않았습니다.")
+                }
+            }
+        }
 
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         return true
     }
 
-    // MARK: UISceneSession Lifecycle
+    private func setupFCM(_ application: UIApplication) {
+        Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
 
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        // 알림 권한 요청
+        UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .alert, .badge]) { isAgree, error in
+            if isAgree {
+                print("🔔 알림 허용됨")
+            } else {
+                print("🔕 알림 거부됨 또는 오류:", error?.localizedDescription ?? "none")
+            }
+        }
+
+        application.registerForRemoteNotifications()
     }
-
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-    }
-
-
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
+    // 🔸 푸시 클릭 시
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        print("📩 알림 클릭됨:", response.notification.request.content.userInfo)
+    }
+
+    // 🔸 앱 실행 중 푸시 수신
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        print("📬 포그라운드 푸시 수신:", notification.request.content.userInfo)
+        return [.sound, .banner, .list]
+    }
+
+    // 🔸 FCM 토큰 갱신 시 호출
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        print("🔥 FCM 토큰 갱신됨:", fcmToken ?? "nil")
+    }
+
+    // 🔸 APNs 등록 성공
+    func application(_ application: UIApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+        let tokenString = deviceToken.map { String(format: "%02X", $0) }.joined()
+        print("📱 APNs Device Token:", tokenString)
+    }
+
+    // 🔸 APNs 등록 실패
+    func application(_ application: UIApplication,
+                     didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("❌ APNs 등록 실패:", error.localizedDescription)
+    }
+}

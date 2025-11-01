@@ -29,6 +29,8 @@
 		E5CBB7692EB5EFCE00AA5996 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7682EB5EFCE00AA5996 /* TagCell.swift */; };
 		E5CBB76B2EB5F17100AA5996 /* SelectableTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB76A2EB5F17100AA5996 /* SelectableTagView.swift */; };
 		E5CBB7A12EB5FA2300AA5996 /* DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7A02EB5FA2300AA5996 /* DTO.swift */; };
+		E5CBB7A52EB620D700AA5996 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = E5CBB7A42EB620D700AA5996 /* FirebaseMessaging */; };
+		E5CBB7A62EB6257500AA5996 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5CBB7A22EB6202600AA5996 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +88,7 @@
 		E5CBB7742EB5F99D00AA5996 /* MoyaLoggerPluggin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyaLoggerPluggin.swift; sourceTree = "<group>"; };
 		E5CBB7812EB5F99D00AA5996 /* MyPageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageAPI.swift; sourceTree = "<group>"; };
 		E5CBB7A02EB5FA2300AA5996 /* DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTO.swift; sourceTree = "<group>"; };
+		E5CBB7A22EB6202600AA5996 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5CBB7A52EB620D700AA5996 /* FirebaseMessaging in Frameworks */,
 				E5CBB75C2EB5EB8D00AA5996 /* Moya in Frameworks */,
 				E5CBB7592EB5EB5D00AA5996 /* SnapKit in Frameworks */,
 			);
@@ -169,6 +173,7 @@
 				E5CBB7502EB5EA5700AA5996 /* Features */,
 				E5CBB7522EB5EACA00AA5996 /* Global */,
 				E5CBB7412EB5E89B00AA5996 /* Info.plist */,
+				E5CBB7A22EB6202600AA5996 /* GoogleService-Info.plist */,
 			);
 			path = SSUTime;
 			sourceTree = "<group>";
@@ -330,6 +335,7 @@
 			packageProductDependencies = (
 				E5CBB7582EB5EB5D00AA5996 /* SnapKit */,
 				E5CBB75B2EB5EB8D00AA5996 /* Moya */,
+				E5CBB7A42EB620D700AA5996 /* FirebaseMessaging */,
 			);
 			productName = SSUTime;
 			productReference = E5CBB7272EB5E89000AA5996 /* SSUTime.app */;
@@ -365,6 +371,7 @@
 			packageReferences = (
 				E5CBB7572EB5EB5D00AA5996 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				E5CBB75A2EB5EB8D00AA5996 /* XCRemoteSwiftPackageReference "Moya" */,
+				E5CBB7A32EB620D700AA5996 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E5CBB7282EB5E89000AA5996 /* Products */;
@@ -392,6 +399,7 @@
 			files = (
 				E5CBB74C2EB5E89B00AA5996 /* Assets.xcassets in Resources */,
 				E5CBB74E2EB5E89B00AA5996 /* LaunchScreen.storyboard in Resources */,
+				E5CBB7A62EB6257500AA5996 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +529,7 @@
 				DEVELOPMENT_TEAM = 2N3PMJ78CA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SSUTime/Info.plist;
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "일정 등록을 위한 캘린더 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -553,6 +562,7 @@
 				DEVELOPMENT_TEAM = 2N3PMJ78CA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SSUTime/Info.plist;
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "일정 등록을 위한 캘린더 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -742,6 +752,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		E5CBB7A32EB620D700AA5996 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -754,6 +772,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E5CBB75A2EB5EB8D00AA5996 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = Moya;
+		};
+		E5CBB7A42EB620D700AA5996 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5CBB7A32EB620D700AA5996 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
