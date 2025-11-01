@@ -1,0 +1,202 @@
+.app {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.home-page,
+.about-page,
+.contact-page {
+  padding: 20px 0;
+}
+
+.home-page {
+  text-align: left;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  gap: 32px;
+}
+
+/* Frame 229 - 텍스트 섹션 */
+.text-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 15px;
+  width: 1080px;
+  height: 51px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+/* Frame 93/228 - 텍스트 콘텐츠 */
+.text-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 6px;
+  width: 1080px;
+  height: 51px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+/* 타이틀: 발표 연습, 이젠 SpeakON에서 끝내세요! */
+.title-text {
+  width: auto;
+  height: 26px;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 26px;
+  letter-spacing: -0.02em;
+  color: #171719;
+  text-align: left;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+/* 서브타이틀: 파일 업로드하고 발표 연습을 시작해보세요. */
+.subtitle-text {
+  width: auto;
+  height: 19px;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #3282FF;
+  text-align: left;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+/* File Add Icon */
+.file-icon {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+/* Frame 34 - 텍스트 컨테이너 */
+.text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 5px;
+  width: 184px;
+  height: 40px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+/* 메인 텍스트: PDF 파일을 업로드 해주세요. */
+.main-text {
+  width: 184px;
+  height: 19px;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #171719;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+/* 서브 텍스트: 최대 100페이지 이하 / 50MB 이하 */
+.sub-text {
+  width: 178px;
+  height: 16px;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #7D7E83;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.about-page ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.about-page li {
+  margin-bottom: 8px;
+}
+
+.contact-page form textarea {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  resize: vertical;
+}
+
+/* 데스크톱 전용 설계 - 반응형 미디어 쿼리 제거 */
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Frame 94 - 업로드 콘텐츠 컨테이너 */
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+  width: 184px;
+  height: 86px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+/* 둥근 사각형 컨테이너 */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 28px;
+  width: 1080px;
+  height: 618px;
+  background: #F1F2F5;
+  border-radius: 30px;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+} 
