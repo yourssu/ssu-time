@@ -16,6 +16,7 @@
 		DF05BE272EB5EBC400E9E351 /* SSUTimeWidgetControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE212EB5EBC400E9E351 /* SSUTimeWidgetControl.swift */; };
 		DF05BE382EB612F300E9E351 /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE372EB612F300E9E351 /* UserDefaults+.swift */; };
 		DF05BE3A2EB6136700E9E351 /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE392EB6136700E9E351 /* UserDefaults+.swift */; };
+		DF05BE3D2EB620E600E9E351 /* LeftAlignedFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF05BE3C2EB620E600E9E351 /* LeftAlignedFlowLayout.swift */; };
 		E5CBB7492EB5E89B00AA5996 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB73F2EB5E89B00AA5996 /* AppDelegate.swift */; };
 		E5CBB74A2EB5E89B00AA5996 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7462EB5E89B00AA5996 /* SceneDelegate.swift */; };
 		E5CBB74B2EB5E89B00AA5996 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CBB7472EB5E89B00AA5996 /* ViewController.swift */; };
@@ -67,6 +68,7 @@
 		DF05BE292EB5FBC300E9E351 /* SSUTimeWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SSUTimeWidgetExtension.entitlements; sourceTree = "<group>"; };
 		DF05BE372EB612F300E9E351 /* UserDefaults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+.swift"; sourceTree = "<group>"; };
 		DF05BE392EB6136700E9E351 /* UserDefaults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+.swift"; sourceTree = "<group>"; };
+		DF05BE3C2EB620E600E9E351 /* LeftAlignedFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedFlowLayout.swift; sourceTree = "<group>"; };
 		E5CBB7272EB5E89000AA5996 /* SSUTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SSUTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5CBB73F2EB5E89B00AA5996 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5CBB7402EB5E89B00AA5996 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,6 +132,14 @@
 			path = SSUTimeWidget;
 			sourceTree = "<group>";
 		};
+		DF05BE3B2EB620E200E9E351 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				DF05BE3C2EB620E600E9E351 /* LeftAlignedFlowLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
 		E5CBB71E2EB5E89000AA5996 = {
 			isa = PBXGroup;
 			children = (
@@ -184,6 +194,7 @@
 		E5CBB7522EB5EACA00AA5996 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				DF05BE3B2EB620E200E9E351 /* Layout */,
 				E5CBB75D2EB5EBB900AA5996 /* Components */,
 				E5CBB7542EB5EAE600AA5996 /* Extensions */,
 				E5CBB7532EB5EAD700AA5996 /* Resources */,
@@ -403,6 +414,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5CBB7492EB5E89B00AA5996 /* AppDelegate.swift in Sources */,
+				DF05BE3D2EB620E600E9E351 /* LeftAlignedFlowLayout.swift in Sources */,
 				E5CBB7562EB5EB0E00AA5996 /* UiView+.swift in Sources */,
 				E5CBB7692EB5EFCE00AA5996 /* TagCell.swift in Sources */,
 				E5CBB7A12EB5FA2300AA5996 /* DTO.swift in Sources */,
