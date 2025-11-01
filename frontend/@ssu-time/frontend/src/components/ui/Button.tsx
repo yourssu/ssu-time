@@ -1,7 +1,5 @@
 import React from 'react'
-import { colors } from '../../theme/colors'
-import { typography } from '../../theme/typography'
-import { padding } from '../../theme/spacing'
+import clsx from 'clsx'
 
 export interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
@@ -16,6 +14,35 @@ export interface ButtonProps {
   style?: React.CSSProperties
 }
 
+const sizeClasses: Record<NonNullable<ButtonProps['size']>, string> = {
+  small: 'h-[30px] min-w-[64px] px-3 text-[13px]',
+  medium: 'h-9 min-w-[80px] px-4 text-sm',
+  large: 'h-12 min-w-[120px] px-5 text-base',
+}
+
+const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
+  primary: [
+    'bg-ssu-primary text-white',
+    'hover:bg-ssu-primary-dark',
+    'disabled:bg-ssu-primary/60 disabled:text-white',
+  ].join(' '),
+  secondary: [
+    'bg-ssu-muted/10 text-ssu-text',
+    'hover:bg-ssu-muted/20',
+    'disabled:bg-ssu-muted/10 disabled:text-ssu-text/60',
+  ].join(' '),
+  outline: [
+    'border border-ssu-muted/40 text-ssu-text',
+    'hover:border-ssu-primary hover:text-ssu-primary',
+    'disabled:border-ssu-muted/20 disabled:text-ssu-text/60',
+  ].join(' '),
+  ghost: [
+    'bg-transparent text-ssu-text',
+    'hover:bg-ssu-muted/10',
+    'disabled:text-ssu-text/60',
+  ].join(' '),
+}
+
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'medium',
@@ -24,162 +51,30 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false,
   onClick,
   children,
-  className = '',
+  className,
   type = 'button',
   style,
 }) => {
-  const getButtonStyles = () => {
-    const baseStyles: React.CSSProperties = {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '8px',
-      borderRadius: '8px',
-      border: 'none',
-      cursor: disabled || loading ? 'not-allowed' : 'pointer',
-      transition: 'all 0.2s ease',
-      fontFamily: typography.button[size === 'small' ? 2 : 1].fontFamily,
-      fontWeight: typography.button[size === 'small' ? 2 : 1].fontWeight,
-      fontSize: typography.button[size === 'small' ? 2 : 1].fontSize,
-      lineHeight: typography.button[size === 'small' ? 2 : 1].lineHeight,
-      outline: 'none',
-      opacity: disabled ? 0.6 : 1,
-    }
-
-    // Size styles
-    const sizeStyles: Record<string, React.CSSProperties> = {
-      small: {
-        padding: padding.sm,
-        height: '30px',
-        minWidth: '64px',
-      },
-      medium: {
-        padding: padding.md,
-        height: '36px',
-        minWidth: '80px',
-      },
-      large: {
-        padding: padding.lg,
-        height: '48px',
-        minWidth: '120px',
-      },
-    }
-
-    // Variant styles
-    const variantStyles: Record<string, React.CSSProperties> = {
-      primary: {
-        backgroundColor: disabled ? colors.interaction.disable : colors.primary.normal,
-        color: colors.static.white,
-      },
-      secondary: {
-        backgroundColor: colors.fill.normal,
-        color: colors.label.normal,
-      },
-      outline: {
-        backgroundColor: 'transparent',
-        color: colors.label.normal,
-        border: `1px solid ${colors.line.normal}`,
-      },
-              ghost: {
-          backgroundColor: 'transparent',
-          color: colors.label.normal,
-        },
-    }
-
-    return {
-      ...baseStyles,
-      ...sizeStyles[size],
-      ...variantStyles[variant],
-      ...style,
-    }
-  }
-
-  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (disabled || loading) return
-    
-    const button = e.currentTarget
-    switch (variant) {
-      case 'primary':
-        button.style.backgroundColor = colors.primary.strong
-        break
-      case 'secondary':
-        button.style.backgroundColor = colors.fill.strong
-        break
-      case 'outline':
-        button.style.color = colors.static.white
-        button.style.backgroundColor = colors.fill.strong
-        break
-              case 'ghost':
-          button.style.backgroundColor = colors.fill.normal
-          break
-    }
-  }
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (disabled || loading) return
-    
-    const button = e.currentTarget
-    switch (variant) {
-      case 'primary':
-        button.style.backgroundColor = colors.primary.normal
-        break
-      case 'secondary':
-        button.style.backgroundColor = colors.fill.normal
-        break
-      case 'outline':
-        button.style.backgroundColor = 'transparent'
-        button.style.color = colors.label.normal
-        break
-      case 'ghost':
-        button.style.backgroundColor = 'transparent'
-        break
-    }
-  }
-
-  const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (disabled || loading) return
-    
-    const button = e.currentTarget
-    if (variant === 'primary') {
-      button.style.backgroundColor = colors.primary.strong
-    }
-  }
-
-  const handleMouseUp = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (disabled || loading) return
-    
-    const button = e.currentTarget
-    if (variant === 'primary') {
-      button.style.backgroundColor = colors.primary.normal
-    }
-  }
-
   return (
     <button
       type={type}
-      className={`button ${className}`}
-      disabled={disabled || loading}
       onClick={onClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      style={getButtonStyles()}
+      disabled={disabled || loading}
+      style={style}
+      className={clsx(
+        'inline-flex items-center justify-center gap-2 rounded-lg transition-colors',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ssu-primary/30',
+        'disabled:cursor-not-allowed',
+        sizeClasses[size],
+        variantClasses[variant],
+        className,
+      )}
     >
       {loading && (
-        <div 
-          style={{
-            width: '16px',
-            height: '16px',
-            border: '2px solid currentColor',
-            borderTop: '2px solid transparent',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-          }}
-        />
+        <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
       )}
-      {icon && !loading && icon}
-      {children}
+      {!loading && icon}
+      <span className="whitespace-nowrap">{children}</span>
     </button>
   )
-} 
+}
