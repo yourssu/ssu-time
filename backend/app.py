@@ -1,0 +1,64 @@
+import asyncio
+import logging
+from datetime import datetime
+from typing import List
+
+from config import DEFAULT_CRAWLER_CONFIG
+from crawler.scraper import run_single_crawler
+from utils.ics_builder import build_ics_from_events, merge_ics_texts
+
+logger = logging.getLogger(__name__)
+
+
+async def run_many_crawlers_and_generate_ics(crawler_configs: List[dict]) -> tuple[str, list[dict]]:
+    # 서로 독립된 네트워크 작업이므로 병렬 실행
+    results = await asyncio.gather(*[run_single_crawler(cfg) for cfg in crawler_configs])
+    all_events = []
+    all_misses = []
+    for r in results:
+        all_events.extend(r.get('events', []))
+        all_misses.extend(r.get('misses', []))
+    logger.info(f"총 이벤트 수: {len(all_events)} / 날짜 미탐지: {len(all_misses)}")
+    return build_ics_from_events(all_events), all_misses
+
+
+def lambda_handler(event, context):
+    """AWS Lambda 핸들러: event에 'crawlers' 배열(optional)을 허용.
+    반환값: ICS 문자열"""
+    crawlers = []
+    if isinstance(event, dict):
+        crawlers = event.get('crawlers') or []
+    if not crawlers:
+        crawlers = [DEFAULT_CRAWLER_CONFIG]
+    ics_text, _ = asyncio.run(run_many_crawlers_and_generate_ics(crawlers))
+    return ics_text
+
+
+async def main():
+    logger.info("🚀 함수 기반 파이프라인 시작")
+    start = datetime.now()
+    ics_text_new, misses = await run_many_crawlers_and_generate_ics([DEFAULT_CRAWLER_CONFIG])
+
+    # 기존 파일이 있으면 병합(중복 제거)
+    try:
+        with open('scholarships.ics', 'r', encoding='utf-8') as f:
+            existing = f.read()
+    except FileNotFoundError:
+        existing = ''
+
+    merged = merge_ics_texts(existing, ics_text_new)
+    with open('scholarships.ics', 'w', encoding='utf-8') as f:
+        f.write(merged)
+
+    # 날짜 미탐지 목록 저장
+    if misses:
+        with open('missing_dates.txt', 'w', encoding='utf-8') as f:
+            for m in misses:
+                f.write(f"{m['title']} & 날짜를 확인할 수 없습니다 & {m['url']}\n")
+    elapsed = (datetime.now() - start).total_seconds()
+    logger.info("🎉 모든 작업 완료!")
+    logger.info(f"⏱ 총 소요 시간: {elapsed:.2f}초")
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
