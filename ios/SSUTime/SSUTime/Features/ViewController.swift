@@ -23,7 +23,7 @@ final class ViewController: UIViewController {
     }()
 
     private let categoryView = SelectableTagView(tags: [
-        "교내 일정", "교내 장학금", "외부 공모전", "내부 공모전", "교내 행사", "교외 행사"
+        "기본형", "총학생회", "외부 공모전", "내부 공모전", "교내 행사", "교외 행사"
     ])
 
     private let alertTitleLabel: UILabel = {
@@ -44,7 +44,6 @@ final class ViewController: UIViewController {
     }()
 
     private let toggle1 = ToggleRowView(title: "하루에 한 번", icon: UIImage(systemName: "bell.fill"), isOn: false)
-    private let toggle2 = ToggleRowView(title: "일주일에 한 번", icon: UIImage(systemName: "bell.fill"), isOn: false)
     private let toggle3 = ToggleRowView(title: "업데이트될 때마다 한 번", icon: UIImage(systemName: "bell.fill"), isOn: false)
 
     private let bottomContainerView = UIView()
@@ -85,7 +84,7 @@ final class ViewController: UIViewController {
         contentView.addSubviews(categoryTitleLabel, categoryView, alertTitleLabel, toggleStackView)
         bottomContainerView.addSubview(addCalendarButton)
 
-        [toggle1, toggle2, toggle3].forEach { toggleStackView.addArrangedSubview($0) }
+        [toggle1, toggle3].forEach { toggleStackView.addArrangedSubview($0) }
 
         scrollView.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -135,9 +134,6 @@ final class ViewController: UIViewController {
         toggle1.setToggleAction { isOn in
             print("하루에 한 번:", isOn)
         }
-        toggle2.setToggleAction { isOn in
-            print("일주일에 한 번:", isOn)
-        }
         toggle3.setToggleAction { isOn in
             print("업데이트될 때마다 한 번:", isOn)
         }
@@ -149,7 +145,41 @@ final class ViewController: UIViewController {
         addCalendarButton.addTarget(self, action: #selector(addCalendarTapped), for: .touchUpInside)
     }
 
+    // MARK: - webcal parser
     @objc private func addCalendarTapped() {
-        print("캘린더에 추가 버튼이 눌림.")
+        print("webcal 캘린더 추가 시도")
+
+        guard let url = URL(string: "webcal://seyeona-ha.github.io/ssu-calendar/ssu_2025_09.ics") else {
+            print("잘못된 webcal URL")
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:]) { success in
+                if success {
+                    print("캘린더 구독 화면으로 이동됨")
+                } else {
+                    print("캘린더 구독 화면 열기 실패")
+                }
+            }
+        } else {
+            print("webcal 스킴을 열 수 없습니다. (Info.plist 설정 확인 필요)")
+            showOpenInSafariAlert(for: url)
+        }
+    }
+
+    //TODO: - API 통신연결이후 수정
+    private func showOpenInSafariAlert(for url: URL) {
+        let alert = UIAlertController(
+            title: "캘린더 열기 실패",
+            message: "Safari에서 직접 열어보시겠어요?",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Safari로 열기", style: .default, handler: { _ in
+            let httpsURL = URL(string: "https://" + url.absoluteString.replacingOccurrences(of: "webcal://", with: ""))!
+            UIApplication.shared.open(httpsURL)
+        }))
+        present(alert, animated: true)
     }
 }
