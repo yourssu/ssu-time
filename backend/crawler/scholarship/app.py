@@ -48,13 +48,13 @@ async def main():
 
     # 기존 파일이 있으면 병합(중복 제거)
     try:
-        with open('scholarships.ics', 'r', encoding='utf-8') as f:
+        with open('../scholarships.ics', 'r', encoding='utf-8') as f:
             existing = f.read()
     except FileNotFoundError:
         existing = ''
 
     merged = merge_ics_texts(existing, ics_text_new)
-    with open('scholarships.ics', 'w', encoding='utf-8') as f:
+    with open('../scholarships.ics', 'w', encoding='utf-8') as f:
         f.write(merged)
 
     # 날짜 미탐지 목록 저장 (JSON 배열)
