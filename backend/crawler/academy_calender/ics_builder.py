@@ -92,7 +92,7 @@ def make_ics(startDate, endDate, title):
 crawling_year(2025, 10)
 crawling_year(2026, 2)
 
-with open('academy_calender.ics', 'wb') as f:
+with open('../academy_calender.ics', 'wb') as f:
     f.write(cal.serialize().encode('utf-8'))
 
 
