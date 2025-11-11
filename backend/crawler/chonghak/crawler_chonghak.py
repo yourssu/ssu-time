@@ -336,7 +336,7 @@ def main():
             data = page_crawl(driver, url + page_info)
             calendar = add_event_to_calendar(data, calendar)
 
-        with open("my.ics", "w") as f:
+        with open("../my.ics", "w") as f:
             f.writelines(calendar.serialize_iter())
 
     finally:
