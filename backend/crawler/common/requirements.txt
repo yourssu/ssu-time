@@ -1,0 +1,11 @@
+# Common Layer Dependencies
+# Lambda Layer에 포함될 공통 라이브러리
+
+# ICS 파일 생성
+ics>=0.7.0
+
+# 날짜 처리
+python-dateutil>=2.8.0
+
+# AWS SDK (Lambda에 기본 포함되지만 명시)
+boto3>=1.26.0

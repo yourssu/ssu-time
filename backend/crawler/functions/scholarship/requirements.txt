@@ -1,0 +1,7 @@
+# Scholarship Lambda Dependencies
+
+# Async HTTP client
+httpx>=0.25.0
+
+# HTML parsing (html.parser는 Python 표준 라이브러리이므로 lxml 불필요)
+beautifulsoup4>=4.11.0
