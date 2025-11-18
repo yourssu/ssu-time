@@ -1,2 +1,6 @@
 *.ics
 missing_dates.json
+**/layer
+*.zip
+**/package
+__pycache__

@@ -1,0 +1,4 @@
+# Merge Lambda Dependencies
+
+# No additional dependencies required
+# All required libraries (ics, boto3) are provided via Common Lambda Layer

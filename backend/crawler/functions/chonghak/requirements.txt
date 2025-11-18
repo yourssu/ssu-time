@@ -1,0 +1,7 @@
+# Chonghak Lambda Dependencies
+
+# Selenium (Chrome + ChromeDriver는 Lambda Layer로 별도 제공)
+selenium>=4.15.0
+
+# Note: Chrome and ChromeDriver binaries are provided via Lambda Layer
+# See: https://github.com/umihico/docker-selenium-lambda for layer setup
