@@ -4,16 +4,12 @@
 총학생회 공지사항을 크롤링하여 ICS 파일을 생성하고 S3에 업로드합니다.
 """
 
-import sys
 import os
 import time
 import re
 from datetime import datetime
 from typing import List, Dict, Optional
-
-# Lambda Layer에서 common 모듈 import
-# Layer 구조: /opt/python/common/
-sys.path.insert(0, '/opt/python')
+import tempfile
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -21,6 +17,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
 
 from common.logger import setup_logger, log_crawler_start, log_crawler_complete, log_execution_metrics
 from common.date_utils import get_date_filter_range
@@ -74,7 +71,7 @@ DATE_PATTERNS = [
 ]
 
 
-def setup_driver() -> webdriver.Chrome:
+def setup_driver(unique_tmp_dir) -> webdriver.Chrome:
     """
     Selenium WebDriver를 설정합니다 (Lambda 환경용).
 
@@ -82,33 +79,52 @@ def setup_driver() -> webdriver.Chrome:
         설정된 Chrome WebDriver
     """
     chrome_options = Options()
-    chrome_options.add_argument('--headless=new')
+    
+    # 1. 바이너리 위치 (Dockerfile에서 /usr/bin/google-chrome으로 심볼릭 링크를 걸어둠)
+    chrome_options.binary_location = "/usr/bin/google-chrome"
+    
+    # 2. 필수 옵션 (Crash 방지)
+    chrome_options.add_argument('--headless=new') 
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--single-process')
-    chrome_options.add_argument('--disable-dev-tools')
-    chrome_options.add_argument('--no-zygote')
-    chrome_options.add_argument('--user-data-dir=/tmp/chrome-user-data')
-    chrome_options.add_argument('--data-path=/tmp/chrome-data')
-    chrome_options.add_argument('--disk-cache-dir=/tmp/chrome-cache')
+    chrome_options.add_argument('--disable-gpu-sandbox')
+    chrome_options.add_argument('--single-process') # Chrome for Testing에서는 다시 켜보는 것도 방법 (메모리 절약)
+    # 만약 single-process로 에러나면 주석 처리하세요. 하지만 CfT에서는 보통 괜찮습니다.
+    
+    # 3. 화면 설정 (렌더링 에러 방지)
+    chrome_options.add_argument('--window-size=1280,1280')
+    chrome_options.add_argument('--hide-scrollbars')
+    chrome_options.add_argument('--enable-logging')
+    chrome_options.add_argument('--v=1')
+    
+    # 4. 데이터 경로 격리 (tempfile 사용)
+    chrome_options.add_argument(f'--user-data-dir={unique_tmp_dir}/user-data')
+    chrome_options.add_argument(f'--data-path={unique_tmp_dir}/data-path')
+    chrome_options.add_argument(f'--disk-cache-dir={unique_tmp_dir}/cache-dir')
+    chrome_options.add_argument(f'--homedir={unique_tmp_dir}') # 홈 디렉토리도 임시로 지정
+    
     chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
-
-    # 성능 최적화
-    chrome_options.add_argument('--disable-images')
-    chrome_options.add_argument('--blink-settings=imagesEnabled=false')
-    chrome_options.add_argument('--disable-extensions')
-    chrome_options.page_load_strategy = 'eager'
-
-    # Lambda Layer의 Chrome 바이너리 경로
-    chrome_options.binary_location = '/opt/chrome/chrome'
-
-    driver = webdriver.Chrome(
-        options=chrome_options,
-        service_args=['--log-path=/tmp/chromedriver.log']
+    
+    # 5. 드라이버 서비스 (로그 남기기 기능 추가)
+    # 크롬이 죽으면 /tmp/chromedriver.log에 이유가 적힙니다.
+    service = Service(
+        executable_path="/usr/bin/chromedriver",
+        log_path='/tmp/chromedriver.log' 
     )
-
-    return driver
+    
+    try:
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        return driver
+    except Exception as e:
+        # 크롬 실행 실패 시, 로그 파일을 읽어서 출력 (디버깅용)
+        print(f"!!! Chrome Init Failed: {e}")
+        try:
+            with open('/tmp/chromedriver.log', 'r') as f:
+                print(f"--- ChromeDriver Log ---\n{f.read()}\n------------------------")
+        except:
+            print("No chromedriver log found.")
+        raise e
 
 
 def parse_title(title: str) -> str:
@@ -386,16 +402,18 @@ def lambda_handler(event, context):
 
     log_crawler_start(logger, CHONGHAK_CONFIG.name, CHONGHAK_CONFIG.url)
 
-    driver = None
-    try:
-        # Selenium 드라이버 설정
-        driver = setup_driver()
 
-        # 페이지 크롤링 (1~4페이지)
-        all_data = []
-        base_url = CHONGHAK_CONFIG.url
 
-        for page_num in range(1, 5):
+    # 페이지 크롤링 (1~4페이지)
+    all_data = []
+    base_url = CHONGHAK_CONFIG.url
+
+    for page_num in range(1, 5):
+        current_tmp_dir = tempfile.mkdtemp(prefix=f'chrome-page{page_num}-')
+        driver = None
+        try:
+            # Selenium 드라이버 설정
+            driver = setup_driver(current_tmp_dir)
             page_url = f"{base_url}&page={page_num}"
             logger.info(f"페이지 {page_num} 크롤링 중...")
 
@@ -403,6 +421,22 @@ def lambda_handler(event, context):
             all_data.extend(page_data)
 
             logger.info(f"페이지 {page_num} 완료: {len(page_data)}개 항목")
+        except Exception as e:
+            duration = time.time() - start_time
+            logger.error(f"크롤링 실패: {e}", exc_info=True)
+
+            return {
+                'statusCode': 500,
+                'body': {
+                    'crawler': CHONGHAK_CONFIG.name,
+                    'error': str(e),
+                    'duration_seconds': round(duration, 2)
+                }
+            }
+
+        finally:
+            if driver:
+                driver.quit()
 
         # 이벤트 생성
         events = create_events_from_data(all_data)
@@ -425,35 +459,19 @@ def lambda_handler(event, context):
         log_crawler_complete(logger, CHONGHAK_CONFIG.name, len(events), duration)
         log_execution_metrics(logger, CHONGHAK_CONFIG.name, duration, len(events), s3_key)
 
-        return {
-            'statusCode': 200,
-            'body': {
-                'crawler': CHONGHAK_CONFIG.name,
-                'events_count': len(events),
-                'articles_found': len(all_data),
-                'duration_seconds': round(duration, 2),
-                's3_bucket': bucket,
-                's3_key': s3_key,
-                'file_size': upload_result.get('size')
-            }
+    return {
+        'statusCode': 200,
+        'body': {
+            'crawler': CHONGHAK_CONFIG.name,
+            'events_count': len(events),
+            'articles_found': len(all_data),
+            'duration_seconds': round(duration, 2),
+            's3_bucket': bucket,
+            's3_key': s3_key,
+            'file_size': upload_result.get('size')
         }
+    }
 
-    except Exception as e:
-        duration = time.time() - start_time
-        logger.error(f"크롤링 실패: {e}", exc_info=True)
-
-        return {
-            'statusCode': 500,
-            'body': {
-                'crawler': CHONGHAK_CONFIG.name,
-                'error': str(e),
-                'duration_seconds': round(duration, 2)
-            }
-        }
-
-    finally:
-        if driver:
-            driver.quit()
 
 
 # 로컬 테스트용

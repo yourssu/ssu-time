@@ -3,5 +3,13 @@
 # Selenium (Chrome + ChromeDriver는 Lambda Layer로 별도 제공)
 selenium>=4.15.0
 
-# Note: Chrome and ChromeDriver binaries are provided via Lambda Layer
-# See: https://github.com/umihico/docker-selenium-lambda for layer setup
+
+# 총학 크롤러는 도커 이미지로 별개로 배포되므로 common모듈의 의존성이 같이 필요함
+# ICS 파일 생성
+ics>=0.7.0
+
+# 날짜 처리
+python-dateutil>=2.8.0
+
+# AWS SDK (Lambda에 기본 포함되지만 명시)
+boto3>=1.26.0
