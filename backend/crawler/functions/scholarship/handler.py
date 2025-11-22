@@ -17,16 +17,15 @@ from urllib.parse import urljoin, urlparse
 # Lambda Layer에서 common 모듈 import
 # Layer 구조: /opt/python/common/
 sys.path.insert(0, '/opt/python')
-sys.path.insert(1, "/Users/minseo/src/ssu-time/ssu-time/backend/crawler")
 import httpx
 from bs4 import BeautifulSoup
 from ics import Calendar, Event
 
-from common.python.logger import setup_logger, log_crawler_start, log_crawler_complete, log_execution_metrics
-from common.python.date_utils import get_date_filter_range, get_datetime_from_text
-from common.python.s3_utils import upload_ics
-from common.python.config import SCHOLARSHIP_CONFIG, S3_BUCKET, DATE_PATTERNS
-from common.python.ics_builder import split_long_duration_event, create_event
+from common.logger import setup_logger, log_crawler_start, log_crawler_complete, log_execution_metrics
+from common.date_utils import get_date_filter_range, get_datetime_from_text
+from common.s3_utils import upload_ics
+from common.config import SCHOLARSHIP_CONFIG, S3_BUCKET, DATE_PATTERNS
+from common.ics_builder import split_long_duration_event, create_event
 
 logger = setup_logger(__name__)
 
