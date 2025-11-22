@@ -24,13 +24,14 @@ class CrawlerConfig:
     date_filter_months: int = 3
     duration_threshold_days: int = 7
 
+SCHEDULE_SPLIT_THRESHOLD = 7
 
 # 총학생회 크롤러 설정
 CHONGHAK_CONFIG = CrawlerConfig(
     name="chonghak",
     category="EVENT",  # or SCHOLARSHIP (동적 결정)
     url="https://stu.ssu.ac.kr/notice?category=중앙&sub=총학생회",
-    output_key="raw/my.ics",
+    output_key="raw/chonghak.ics",
     timeout=300
 )
 
@@ -43,6 +44,20 @@ ACADEMIC_CONFIG = CrawlerConfig(
     timeout=180
 )
 
+DATE_PATTERNS = [
+    #시간 있음
+    "%Y년 %m월 %d일 %H:%M",
+    "%m월 %d일 %H:%M",
+    "%Y.%m.%d. %H:%M",
+    "%Y. %m. %d. %H:%M",
+    "%Y-%m-%d %H:%M",
+
+    # 시간 없음
+    "%m월 %d일",
+    "%Y.%m.%d",
+    "%y.%m.%d"
+]
+
 # 장학금 크롤러 설정
 SCHOLARSHIP_CONFIG = CrawlerConfig(
     name="scholarship",
@@ -51,9 +66,6 @@ SCHOLARSHIP_CONFIG = CrawlerConfig(
     output_key="raw/scholarships.ics",
     timeout=300
 )
-
-# 총학 키워드 필터
-CHONGHAK_KEYWORDS = ["예비군", "장학", "특식", "개강", "주차"]
 
 # 병합 파일 조합 정의
 MERGE_COMBINATIONS = {
