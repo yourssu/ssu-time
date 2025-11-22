@@ -9,6 +9,7 @@ import os
 import time
 from datetime import datetime
 from typing import List
+import re
 
 # Lambda Layer에서 common 모듈 import
 # Layer 구조: /opt/python/common/
@@ -81,6 +82,9 @@ def crawl_academic_calendar(year: int, month_filter: int, events: List) -> int:
 
         date_cleaned = clean_date_text(date_div.get_text())
         title_text = ' '.join(title_div.get_text(strip=True).split())
+        
+        title_text = re.sub(r'\d{4}학년도\s*\d{1}\s*학기', '', title_text)
+        title_text = re.sub(r'\d{4}학년도\s*(?:겨울|여름)\s*학기', '', title_text)
 
         # 중복 제거
         key = (date_cleaned, title_text)
@@ -129,8 +133,7 @@ def crawl_academic_calendar(year: int, month_filter: int, events: List) -> int:
                 title=title_text,
                 start_date=start_date_obj,
                 end_date=end_date_obj if duration_days > 0 else None,
-                category=ACADEMIC_CONFIG.category,
-                all_day=True
+                categories=ACADEMIC_CONFIG.category,
             )
             events.append(event)
         else:
@@ -139,9 +142,8 @@ def crawl_academic_calendar(year: int, month_filter: int, events: List) -> int:
                 title=title_text,
                 start_date=start_date_obj,
                 end_date=end_date_obj,
-                category=ACADEMIC_CONFIG.category,
+                categories=ACADEMIC_CONFIG.category,
                 threshold_days=ACADEMIC_CONFIG.duration_threshold_days,
-                has_time=False
             )
             events.extend(split_events)
 

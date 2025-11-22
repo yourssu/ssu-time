@@ -13,9 +13,8 @@ def create_event(
     title: str,
     start_date: datetime,
     end_date: Optional[datetime] = None,
-    category: str = "EVENT",
+    categories: List[str] = "EVENT",
     url: Optional[str] = None,
-    all_day: bool = True
 ) -> Event:
     """
     ICS 이벤트 생성
@@ -34,6 +33,10 @@ def create_event(
     event = Event()
     event.name = title
     event.created = datetime.now()
+    
+    all_day = False
+    if start_date.time() is datetime.min.time():
+        all_day = True
 
     if all_day:
         # 하루종일 이벤트
@@ -47,7 +50,7 @@ def create_event(
         if end_date:
             event.end = end_date
 
-    event.categories = [category]
+    event.categories = categories
     if url:
         event.url = url
 
@@ -60,10 +63,9 @@ def split_long_duration_event(
     title: str,
     start_date: datetime,
     end_date: datetime,
-    category: str,
+    categories: list[str],
     url: Optional[str] = None,
     threshold_days: int = 7,
-    has_time: bool = False
 ) -> List[Event]:
     """
     7일 이상 이벤트를 시작/마감으로 분리
@@ -81,13 +83,16 @@ def split_long_duration_event(
         Event 객체 리스트 (1개 또는 2개)
     """
     duration = (end_date - start_date).days
-
+    has_time = False
+    if start_date.time() is datetime.min.time():
+        has_time = True
+    
     if duration < threshold_days:
         # 짧은 기간: 단일 이벤트
         if has_time:
-            return [create_event(f"{title} 기간", start_date, end_date, category, url, all_day=False)]
+            return [create_event(f"{title} 기간", start_date, end_date, categories, url)]
         else:
-            return [create_event(title, start_date, end_date, category, url, all_day=True)]
+            return [create_event(title, start_date, end_date, categories, url)]
 
     # 긴 기간: 시작/마감으로 분리
     events = []
@@ -96,9 +101,8 @@ def split_long_duration_event(
     start_event = create_event(
         f"{title} 시작",
         start_date,
-        category=category,
+        categories=categories,
         url=url,
-        all_day=True
     )
     events.append(start_event)
 
@@ -120,18 +124,16 @@ def split_long_duration_event(
             f"{title} 마감",
             end_begin,
             end_date,
-            category=category,
+            categories=categories,
             url=url,
-            all_day=False
         )
     else:
         # 시간 정보 없으면 하루종일 이벤트
         end_event = create_event(
             f"{title} 마감",
             end_date,
-            category=category,
+            categories=categories,
             url=url,
-            all_day=True
         )
 
     events.append(end_event)

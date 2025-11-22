@@ -6,7 +6,88 @@
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import calendar as cal_module
+from .config import DATE_PATTERNS
+from .logger import setup_logger
+import re
+from re import Pattern
 
+logger = setup_logger(__name__)
+
+def get_datetime_from_text(text: str) -> datetime | tuple[datetime, datetime] | None:
+    text = __remove_day_of_week(text)
+    result = None
+    if '~' in text:
+        result = __find_range_datetime(text)
+    
+    if result is None:
+        result = __find_single_datetime(text)
+    
+    return result
+
+def __find_single_datetime(text: str) -> datetime:
+    for pattern in DATE_PATTERNS:
+        regex = __make_regex(pattern)
+        match_string = regex.search(text)
+        if match_string:
+            result = datetime.strptime(match_string.group(), pattern)
+            result = __restore_year(pattern, result)
+            if (__is_to_old(result)):
+                continue
+            return result
+    
+
+def __find_range_datetime(text: str) -> tuple[datetime, datetime] | None:
+    pattern_combination = []
+    for pattern_a in DATE_PATTERNS:
+        for pattern_b in DATE_PATTERNS:
+            pattern_combination.append((pattern_a + " ~ " + pattern_b, (pattern_a, pattern_b)))
+    
+    for combination in pattern_combination:
+        regex = __make_regex(combination[0])
+        left_pattern, right_pattern = combination[1]
+        match_string = regex.search(text)
+        if match_string is None:
+            continue
+        left_string, right_string = [text.strip() for text in match_string.group().split("~")]
+        left_time = datetime.strptime(left_string, left_pattern)
+        left_time = __restore_year(left_pattern, left_time)
+        right_time = datetime.strptime(right_string, right_pattern)
+        right_time = __restore_year(right_pattern, right_time)
+        if __is_to_old(right_time):
+            continue
+        return (left_time, right_time)
+    
+    # No Match
+    return None
+        
+def __restore_year(pattern: str, date: datetime) -> datetime:
+    if "%Y" in pattern:
+        return date
+    if "%y" in pattern:
+        return date
+    date = date.replace(year=datetime.now().year)
+    return date
+
+def __is_to_old(time: datetime) -> bool:
+    return time.month < datetime.now().month
+
+def __make_regex(pattern: str) -> Pattern:
+    regex_string = pattern \
+    .replace("%Y", "\\d{4}") \
+    .replace("%m", "\\d{1,2}") \
+    .replace("%d", "\\d{1,2}") \
+    .replace("%a", "[월화수목금토일]") \
+    .replace("%H", "\\d{1,2}") \
+    .replace("%M", "\\d{1,2}") \
+    .replace(".", "\\.") \
+    .replace("(", "\\(").replace(")", "\\)") \
+    .replace(" ", "\\s*")
+    return re.compile(regex_string)
+
+def __remove_day_of_week(string: str) -> str:
+    string = re.sub("\\([월화수목금토일]\\)", "" , string)
+    string = re.sub("[월화수목금토일]요일", "", string)
+    return string
 
 def get_date_filter_range() -> tuple[datetime, datetime]:
     """

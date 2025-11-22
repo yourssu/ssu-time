@@ -20,55 +20,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 
 from common.logger import setup_logger, log_crawler_start, log_crawler_complete, log_execution_metrics
-from common.date_utils import get_date_filter_range
+from common.date_utils import get_date_filter_range, get_datetime_from_text
 from common.ics_builder import create_event, split_long_duration_event, create_calendar_from_events, serialize_calendar
 from common.s3_utils import upload_ics
-from common.config import CHONGHAK_CONFIG, CHONGHAK_KEYWORDS, S3_BUCKET
+from common.config import CHONGHAK_CONFIG, S3_BUCKET, DATE_PATTERNS
 
 logger = setup_logger(__name__)
-
-# 날짜 패턴 정의 (메타데이터 포함)
-DATE_PATTERNS = [
-    # 범위 패턴 (시간 있음)
-    {
-        "pattern": r'\d{4}년\s*(\d{1,2})월\s*(\d{1,2})일\s*\([월화수목금토일]\)\s*(\d{1,2}):(\d{2})\s*~\s*(\d{1,2})월\s*(\d{1,2})일\s*\([월화수목금토일]\)\s*(\d{1,2}):(\d{2})',
-        "type": "range_with_time",
-    },
-    {
-        "pattern": r'\d{4}\.(\d{1,2})\.(\d{1,2})\.\([월화수목금토일]\)\s*(\d{1,2}):(\d{2})\s*~\s*\d{4}\.(\d{1,2})\.(\d{1,2})\.\([월화수목금토일]\)\s*(\d{1,2}):(\d{2})',
-        "type": "range_with_time",
-    },
-    # 단일 패턴 (시간 있음)
-    {
-        "pattern": r'\d{4}년\s*(\d{1,2})월\s*(\d{1,2})일\s*\([월화수목금토일]\)\s*(\d{1,2}):(\d{2})',
-        "type": "single_with_time",
-    },
-    {
-        "pattern": r'\d{4}\.(\d{1,2})\.(\d{1,2})\.\([월화수목금토일]\)\s*(\d{1,2}):(\d{2})',
-        "type": "single_with_time",
-    },
-    {
-        "pattern": r'\d{4}-(\d{1,2})-(\d{1,2})\s+(\d{1,2}):(\d{2})',
-        "type": "single_with_time",
-    },
-    {
-        "pattern": r'(\d{1,2})월\s*(\d{1,2})일\s*\([월화수목금토일]\)\s*(\d{1,2}):(\d{2})',
-        "type": "single_with_time",
-    },
-    # 단일 패턴 (시간 없음)
-    {
-        "pattern": r'\d{4}년\s*(\d{1,2})월\s*(\d{1,2})일\s*\([월화수목금토일]\)',
-        "type": "single_no_time",
-    },
-    {
-        "pattern": r'\d{4}\.(\d{1,2})\.(\d{1,2})',
-        "type": "single_no_time",
-    },
-    {
-        "pattern": r'\d{1,2}\.\s*(\d{1,2})\.\s*(\d{1,2})',
-        "type": "single_no_time",
-    },
-]
 
 
 def setup_driver(unique_tmp_dir) -> webdriver.Chrome:
@@ -144,6 +101,7 @@ def parse_title(title: str) -> str:
         cleaned_title = cleaned_title.replace(keyword, "")
 
     # 학년도/학기 패턴 제거
+    cleaned_title = re.sub(r'\d{4}-\d{1}학기', '', cleaned_title)
     cleaned_title = re.sub(r'\d{4}학년도\s*', '', cleaned_title)
     cleaned_title = re.sub(r'제?\d+학기\s*', '', cleaned_title)
     cleaned_title = re.sub(r'\d{4}년도?\s*', '', cleaned_title)
@@ -184,7 +142,7 @@ def is_keyword_matched(title: str, keywords: List[str]) -> bool:
     return any(keyword in title for keyword in keywords)
 
 
-def extract_date_info(article: WebElement) -> Optional[Dict]:
+def extract_date_info(article: WebElement) -> datetime | tuple[datetime, datetime] | None:
     """
     게시물에서 날짜 정보를 추출합니다.
 
@@ -192,9 +150,9 @@ def extract_date_info(article: WebElement) -> Optional[Dict]:
         article: WebElement 객체
 
     Returns:
-        {"day": tuple, "type": str} 또는 None
+        datetime 객체
     """
-    tag_selectors = ["p", "div", "span", "li", "td"]
+    tag_selectors = ["p"]
     all_contents = []
 
     for tag in tag_selectors:
@@ -204,11 +162,7 @@ def extract_date_info(article: WebElement) -> Optional[Dict]:
     # 태그가 없을 경우 article 전체 텍스트 확인
     if len(all_contents) == 0:
         article_text = article.text
-        for pattern_info in DATE_PATTERNS:
-            match = re.search(pattern_info["pattern"], article_text)
-            if match:
-                return {"day": match.groups(), "type": pattern_info["type"]}
-        return None
+        return get_datetime_from_text(article_text)
 
     # 각 요소에서 패턴 매칭
     for content in all_contents:
@@ -216,15 +170,14 @@ def extract_date_info(article: WebElement) -> Optional[Dict]:
         if not content_text or len(content_text) < 5:
             continue
 
-        for pattern_info in DATE_PATTERNS:
-            match = re.search(pattern_info["pattern"], content_text)
-            if match:
-                return {"day": match.groups(), "type": pattern_info["type"]}
+        result = get_datetime_from_text(content_text)
+        if result:
+            return result
 
     return None
 
 
-def crawl_page(driver: webdriver.Chrome, page_url: str, keywords: List[str]) -> List[Dict]:
+def crawl_page(driver: webdriver.Chrome, page_url: str) -> List[Dict]:
     """
     단일 페이지를 크롤링하여 데이터를 추출합니다.
 
@@ -254,7 +207,7 @@ def crawl_page(driver: webdriver.Chrome, page_url: str, keywords: List[str]) -> 
             title_element = item.find_element(By.TAG_NAME, "h1")
             title = title_element.text
 
-            if title and is_keyword_matched(title, keywords):
+            if title:
                 url = item.get_attribute('href')
                 articles_to_crawl.append({"title": title, "url": url})
         except Exception as e:
@@ -271,26 +224,27 @@ def crawl_page(driver: webdriver.Chrome, page_url: str, keywords: List[str]) -> 
 
         try:
             driver.get(url)
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.TAG_NAME, "article"))
+            wait = WebDriverWait(driver, 10)
+            wait.until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, "article > section > div > section"))
             )
 
-            article = driver.find_element(By.TAG_NAME, "article")
-            day_info = extract_date_info(article)
+            article = driver.find_element(By.CSS_SELECTOR, "article > section")
 
-            if day_info:
+            date = extract_date_info(article)
+
+            if date:
                 parsed_title = parse_title(title)
-                data.append({"title": parsed_title, "day_info": day_info, "url": url})
-                logger.debug(f"  ✓ {parsed_title}")
+                data.append({"title": parsed_title, "date": date, "url": url})
+                logger.info(f"  ✓ {parsed_title}")
             else:
-                logger.debug(f"  ✗ 날짜 미발견: {title}")
+                logger.info(f"  ✗ 날짜 미발견: {title}")
 
         except Exception as e:
-            logger.debug(f"  ✗ 게시물 처리 실패 ({title}): {e}")
+            logger.info(f"  ✗ 게시물 처리 실패 ({title}): {e}")
             continue
 
     return data
-
 
 def create_events_from_data(data_list: List[Dict]) -> List:
     """
@@ -308,81 +262,32 @@ def create_events_from_data(data_list: List[Dict]) -> List:
 
     for data in data_list:
         title = data.get('title')
-        day_info = data.get('day_info')
+        date = data.get('date')
         url = data.get('url')
 
-        if not day_info:
+        if not date:
             continue
 
-        day = day_info["day"]
-        pattern_type = day_info["type"]
         category = get_category_from_title(title)
 
-        try:
-            if pattern_type == "range_with_time":
-                # 범위 패턴 (시간 있음)
-                start_month, start_day, start_hour, start_min = int(day[0]), int(day[1]), int(day[2]), int(day[3])
-                end_month, end_day, end_hour, end_min = int(day[4]), int(day[5]), int(day[6]), int(day[7])
+        if isinstance(date, tuple):
+            event = split_long_duration_event(
+            title=title,
+            start_date=date[0],
+            end_date=date[1],
+            categories=[category],
+            url=url,
+            )
+            events.extend(event)
+        if isinstance(date, datetime):
+            event = create_event(
+                title=title,
+                start_date=date,
+                categories=[category],
+                url=url,
+            )
+            events.append(event)
 
-                start_date = datetime(cur_year, start_month, start_day, start_hour, start_min)
-                end_date = datetime(cur_year, end_month, end_day, end_hour, end_min)
-
-                # 날짜 필터링
-                if not (filter_start <= end_date <= filter_end):
-                    continue
-
-                # common 모듈의 split_long_duration_event 사용
-                event_list = split_long_duration_event(
-                    title=title,
-                    start_date=start_date,
-                    end_date=end_date,
-                    category=category,
-                    url=url,
-                    threshold_days=7,
-                    has_time=True
-                )
-                events.extend(event_list)
-
-            elif pattern_type == "single_with_time":
-                # 단일 패턴 (시간 있음) - 1시간 이벤트
-                month, day_num, hour, minute = int(day[0]), int(day[1]), int(day[2]), int(day[3])
-
-                event_date = datetime(cur_year, month, day_num, hour, minute)
-                if not (filter_start <= event_date <= filter_end):
-                    continue
-
-                # 1시간 이벤트
-                end_date = event_date.replace(hour=hour + 1)
-                event = create_event(
-                    title=title,
-                    start_date=event_date,
-                    end_date=end_date,
-                    category=category,
-                    url=url,
-                    all_day=False
-                )
-                events.append(event)
-
-            elif pattern_type == "single_no_time":
-                # 단일 패턴 (시간 없음) - 종일 이벤트
-                month, day_num = int(day[0]), int(day[1])
-
-                event_date = datetime(cur_year, month, day_num)
-                if not (filter_start <= event_date <= filter_end):
-                    continue
-
-                event = create_event(
-                    title=title,
-                    start_date=event_date,
-                    category=category,
-                    url=url,
-                    all_day=True
-                )
-                events.append(event)
-
-        except Exception as e:
-            logger.warning(f"이벤트 생성 실패 ({title}): {e}")
-            continue
 
     return events
 
@@ -404,60 +309,60 @@ def lambda_handler(event, context):
 
 
 
-    # 페이지 크롤링 (1~4페이지)
+    # 페이지 크롤링 (1페이지)
     all_data = []
     base_url = CHONGHAK_CONFIG.url
+    page_num = 1
 
-    for page_num in range(1, 5):
-        current_tmp_dir = tempfile.mkdtemp(prefix=f'chrome-page{page_num}-')
-        driver = None
-        try:
-            # Selenium 드라이버 설정
-            driver = setup_driver(current_tmp_dir)
-            page_url = f"{base_url}&page={page_num}"
-            logger.info(f"페이지 {page_num} 크롤링 중...")
+    current_tmp_dir = tempfile.mkdtemp(prefix=f'chrome-page{page_num}-')
+    driver = None
+    try:
+        # Selenium 드라이버 설정
+        driver = setup_driver(current_tmp_dir)
+        page_url = f"{base_url}&page={page_num}"
+        logger.info(f"페이지 {page_num} 크롤링 중...")
 
-            page_data = crawl_page(driver, page_url, CHONGHAK_KEYWORDS)
-            all_data.extend(page_data)
+        page_data = crawl_page(driver, page_url)
+        all_data.extend(page_data)
 
-            logger.info(f"페이지 {page_num} 완료: {len(page_data)}개 항목")
-        except Exception as e:
-            duration = time.time() - start_time
-            logger.error(f"크롤링 실패: {e}", exc_info=True)
-
-            return {
-                'statusCode': 500,
-                'body': {
-                    'crawler': CHONGHAK_CONFIG.name,
-                    'error': str(e),
-                    'duration_seconds': round(duration, 2)
-                }
-            }
-
-        finally:
-            if driver:
-                driver.quit()
-
-        # 이벤트 생성
-        events = create_events_from_data(all_data)
-
-        # Calendar 생성
-        calendar = create_calendar_from_events(events)
-        ics_content = serialize_calendar(calendar)
-
-        # S3 업로드
-        bucket = os.environ.get('S3_BUCKET', S3_BUCKET)
-        s3_key = CHONGHAK_CONFIG.output_key
-
-        upload_result = upload_ics(ics_content, bucket, s3_key)
-
-        if not upload_result.get('success'):
-            raise Exception(f"S3 업로드 실패: {upload_result.get('error')}")
-
+        logger.info(f"페이지 {page_num} 완료: {len(page_data)}개 항목")
+    except Exception as e:
         duration = time.time() - start_time
+        logger.error(f"크롤링 실패: {e}", exc_info=True)
 
-        log_crawler_complete(logger, CHONGHAK_CONFIG.name, len(events), duration)
-        log_execution_metrics(logger, CHONGHAK_CONFIG.name, duration, len(events), s3_key)
+        return {
+            'statusCode': 500,
+            'body': {
+                'crawler': CHONGHAK_CONFIG.name,
+                'error': str(e),
+                'duration_seconds': round(duration, 2)
+            }
+        }
+
+    finally:
+        if driver:
+            driver.quit()
+
+    # 이벤트 생성
+    events = create_events_from_data(all_data)
+
+    # Calendar 생성
+    calendar = create_calendar_from_events(events)
+    ics_content = serialize_calendar(calendar)
+
+    # S3 업로드
+    bucket = os.environ.get('S3_BUCKET', S3_BUCKET)
+    s3_key = CHONGHAK_CONFIG.output_key
+
+    upload_result = upload_ics(ics_content, bucket, s3_key)
+
+    if not upload_result.get('success'):
+        raise Exception(f"S3 업로드 실패: {upload_result.get('error')}")
+
+    duration = time.time() - start_time
+
+    log_crawler_complete(logger, CHONGHAK_CONFIG.name, len(events), duration)
+    log_execution_metrics(logger, CHONGHAK_CONFIG.name, duration, len(events), s3_key)
 
     return {
         'statusCode': 200,
