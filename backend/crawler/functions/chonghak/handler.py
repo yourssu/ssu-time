@@ -8,7 +8,7 @@ import os
 import time
 import re
 from datetime import datetime
-from typing import List, Dict, Optional
+from typing import List, Dict
 import tempfile
 
 from selenium import webdriver
@@ -23,7 +23,7 @@ from common.logger import setup_logger, log_crawler_start, log_crawler_complete,
 from common.date_utils import get_date_filter_range, get_datetime_from_text
 from common.ics_builder import create_event, split_long_duration_event, create_calendar_from_events, serialize_calendar
 from common.s3_utils import upload_ics
-from common.config import CHONGHAK_CONFIG, S3_BUCKET, DATE_PATTERNS
+from common.config import CHONGHAK_CONFIG, S3_BUCKET
 
 logger = setup_logger(__name__)
 
@@ -47,7 +47,7 @@ def setup_driver(unique_tmp_dir) -> webdriver.Chrome:
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--disable-gpu-sandbox')
     chrome_options.add_argument('--single-process') # Chrome for Testing에서는 다시 켜보는 것도 방법 (메모리 절약)
-    # 만약 single-process로 에러나면 주석 처리하세요. 하지만 CfT에서는 보통 괜찮습니다.
+
     
     # 3. 화면 설정 (렌더링 에러 방지)
     chrome_options.add_argument('--window-size=1280,1280')
@@ -94,7 +94,7 @@ def parse_title(title: str) -> str:
     Returns:
         정제된 제목
     """
-    keywords_to_remove = ["안내", "공개", "접수", "신청", "모집", "선발", "관련", "알림"]
+    keywords_to_remove = ["안내", "공개", "접수", "신청", "모집", "선발", "관련", "알림", "참가자"]
 
     cleaned_title = title
     for keyword in keywords_to_remove:
@@ -105,6 +105,7 @@ def parse_title(title: str) -> str:
     cleaned_title = re.sub(r'\d{4}학년도\s*', '', cleaned_title)
     cleaned_title = re.sub(r'제?\d+학기\s*', '', cleaned_title)
     cleaned_title = re.sub(r'\d{4}년도?\s*', '', cleaned_title)
+    cleaned_title = re.sub(r'\d{4}\s+', '', cleaned_title)
 
     # 특수문자 제거
     cleaned_title = re.sub(r'[\[\]\(\)\{\}【】]', '', cleaned_title)
@@ -257,8 +258,6 @@ def create_events_from_data(data_list: List[Dict]) -> List:
         Event 객체 리스트
     """
     events = []
-    cur_year = datetime.now().year
-    filter_start, filter_end = get_date_filter_range()
 
     for data in data_list:
         title = data.get('title')

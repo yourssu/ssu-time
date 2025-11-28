@@ -3,13 +3,14 @@
 모든 크롤러에서 사용하는 날짜 필터링 로직을 통합합니다.
 """
 
-from datetime import datetime, date
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import calendar as cal_module
 from .config import DATE_PATTERNS
 from .logger import setup_logger
 import re
 from re import Pattern
+from zoneinfo import ZoneInfo
 
 logger = setup_logger(__name__)
 
@@ -32,7 +33,8 @@ def __find_single_datetime(text: str) -> datetime:
             result = datetime.strptime(match_string.group(), pattern)
             result = __restore_year(pattern, result)
             if (__is_to_old(result)):
-                continue
+                return
+            result = __change_timezone(result)
             return result
     
 
@@ -41,6 +43,7 @@ def __find_range_datetime(text: str) -> tuple[datetime, datetime] | None:
     for pattern_a in DATE_PATTERNS:
         for pattern_b in DATE_PATTERNS:
             pattern_combination.append((pattern_a + " ~ " + pattern_b, (pattern_a, pattern_b)))
+        pattern_combination.append((pattern_a + " ~ %H:%M", (pattern_a, "%H:%M")))
     
     for combination in pattern_combination:
         regex = __make_regex(combination[0])
@@ -53,13 +56,24 @@ def __find_range_datetime(text: str) -> tuple[datetime, datetime] | None:
         left_time = __restore_year(left_pattern, left_time)
         right_time = datetime.strptime(right_string, right_pattern)
         right_time = __restore_year(right_pattern, right_time)
+
+        if left_time >= right_time and left_time.year > right_time.year:
+            right_time = right_time.replace(year = left_time.year)
+        if right_pattern == "%H:%M":
+            right_time = right_time.replace(year=left_time.year, month=left_time.month, day = left_time.day)
+
         if __is_to_old(right_time):
-            continue
+            return
+        left_time = __change_timezone(left_time)
+        right_time = __change_timezone(right_time)
         return (left_time, right_time)
     
     # No Match
     return None
-        
+
+def __change_timezone(time: datetime) -> datetime:
+    return time.replace(tzinfo=ZoneInfo("Asia/Seoul"))
+
 def __restore_year(pattern: str, date: datetime) -> datetime:
     if "%Y" in pattern:
         return date
@@ -69,7 +83,7 @@ def __restore_year(pattern: str, date: datetime) -> datetime:
     return date
 
 def __is_to_old(time: datetime) -> bool:
-    return time.month < datetime.now().month
+    return time.date() < datetime.now().date()
 
 def __make_regex(pattern: str) -> Pattern:
     regex_string = pattern \
@@ -85,7 +99,7 @@ def __make_regex(pattern: str) -> Pattern:
     return re.compile(regex_string)
 
 def __remove_day_of_week(string: str) -> str:
-    string = re.sub("\\([월화수목금토일]\\)", "" , string)
+    string = re.sub("\\(\\s*[월화수목금토일]\\s*\\)", "" , string)
     string = re.sub("[월화수목금토일]요일", "", string)
     return string
 

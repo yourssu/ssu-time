@@ -83,8 +83,18 @@ def crawl_academic_calendar(year: int, month_filter: int, events: List) -> int:
         date_cleaned = clean_date_text(date_div.get_text())
         title_text = ' '.join(title_div.get_text(strip=True).split())
         
+        match_text = re.search(r'\d{4}학년도\s*\d{1}\s*학기', title_text)
+        if not match_text:
+            match_text = re.search(r'\d{4}학년도\s*(?:겨울|여름)\s*학기', title_text)
+        if not match_text:
+            match_text = re.search(r'\d{4}학년도', title_text)
+        
+        if match_text:
+            match_text = match_text.group()
+
         title_text = re.sub(r'\d{4}학년도\s*\d{1}\s*학기', '', title_text)
         title_text = re.sub(r'\d{4}학년도\s*(?:겨울|여름)\s*학기', '', title_text)
+        title_text = re.sub(r'\d{4}학년도', '', title_text)
 
         # 중복 제거
         key = (date_cleaned, title_text)
@@ -133,7 +143,8 @@ def crawl_academic_calendar(year: int, month_filter: int, events: List) -> int:
                 title=title_text,
                 start_date=start_date_obj,
                 end_date=end_date_obj if duration_days > 0 else None,
-                categories=ACADEMIC_CONFIG.category,
+                categories=[ACADEMIC_CONFIG.category],
+                description = match_text,
             )
             events.append(event)
         else:
@@ -142,8 +153,9 @@ def crawl_academic_calendar(year: int, month_filter: int, events: List) -> int:
                 title=title_text,
                 start_date=start_date_obj,
                 end_date=end_date_obj,
-                categories=ACADEMIC_CONFIG.category,
+                categories=[ACADEMIC_CONFIG.category],
                 threshold_days=ACADEMIC_CONFIG.duration_threshold_days,
+                description = match_text,
             )
             events.extend(split_events)
 
