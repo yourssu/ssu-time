@@ -9,9 +9,8 @@ import os
 import time
 import re
 import asyncio
-import calendar as calmod
-from datetime import datetime, timezone
-from typing import List, Tuple, Dict, Optional
+from datetime import datetime
+from typing import List, Tuple
 from urllib.parse import urljoin, urlparse
 
 # Lambda Layer에서 common 모듈 import
@@ -19,12 +18,12 @@ from urllib.parse import urljoin, urlparse
 sys.path.insert(0, '/opt/python')
 import httpx
 from bs4 import BeautifulSoup
-from ics import Calendar, Event
+from ics import Calendar
 
 from common.logger import setup_logger, log_crawler_start, log_crawler_complete, log_execution_metrics
-from common.date_utils import get_date_filter_range, get_datetime_from_text
+from common.date_utils import get_datetime_from_text
 from common.s3_utils import upload_ics
-from common.config import SCHOLARSHIP_CONFIG, S3_BUCKET, DATE_PATTERNS
+from common.config import SCHOLARSHIP_CONFIG, S3_BUCKET
 from common.ics_builder import split_long_duration_event, create_event
 
 logger = setup_logger(__name__)
@@ -83,13 +82,13 @@ def is_application_label(label: str) -> bool:
 def build_ics_from_events(events: List[dict]) -> str:
     """이벤트 딕셔너리 리스트를 ICS 문자열로 변환"""
     cal = Calendar()
-    filter_start, filter_end = get_date_filter_range()
 
     for ev in events:
         date = ev.get("date", [])
         if not date:
             continue
         if isinstance(date, tuple):
+            logger.info(f"date = {date}")
             event = split_long_duration_event(title= ev.get('title'), start_date=date[0], end_date=date[1], categories=ev.get('tags'), url=ev.get('url'))
             cal.events = cal.events.union(event)
             continue
@@ -165,14 +164,14 @@ def extract_schedule_items_from_soup(
     text_nodes = root.find_all(string=lambda s: isinstance(s, str))
     parents = []
     seen = set()
-    BLOCK_TAGS = {"p", "li", "div", "section", "article"}
+    BLOCK_TAGS = {"p", "li"}
 
     for t in text_nodes:
         node = t.parent if hasattr(t, 'parent') else None
         if not node:
             continue
         cur = node
-        chosen = node
+        chosen = None
         while cur and hasattr(cur, 'name'):
             if cur.name in BLOCK_TAGS:
                 chosen = cur
@@ -180,6 +179,8 @@ def extract_schedule_items_from_soup(
             cur = getattr(cur, 'parent', None)
             if cur is None or cur == root:
                 break
+        if not chosen:
+            continue
         key = id(chosen)
         if key in seen:
             continue
@@ -192,7 +193,9 @@ def extract_schedule_items_from_soup(
         if not text:
             continue
 
-        return get_datetime_from_text(text)
+        result = get_datetime_from_text(text)
+        if result:
+            return result
 
 
 async def extract_detail(
@@ -246,9 +249,10 @@ async def run_crawler(config: dict) -> dict:
                 continue
 
             ev = {'title': f"{foundation} 장학금", 'date': date, 'url': url_}
-            if "교내장학금" in ev.get("title") or "국가장학금" in ev.get("title"):
+            if "교내장학금" in ev.get("title").replace(" ", "") or "국가장학금" in ev.get("title").replace(" ", ""):
                 ev['tags'] = ['SCHOLARSHIP', 'STANDARD']
-            ev['tags'] = ['SCHOLARSHIP']
+            else:
+                ev['tags'] = ['SCHOLARSHIP']
             events.append(ev)
 
         return {'events': events, 'misses': misses}
@@ -280,9 +284,6 @@ def lambda_handler(event, context):
 
         # ICS 파일 생성
         ics_content = build_ics_from_events(events)
-
-        with open("temp.txt", 'w+') as file:
-            file.write(ics_content)
 
         # S3 업로드
         bucket = os.environ.get('S3_BUCKET', S3_BUCKET)

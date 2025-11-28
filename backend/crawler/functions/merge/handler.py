@@ -77,6 +77,48 @@ def merge_all_ics_files(bucket: str, raw_prefix: str) -> Calendar:
     return merged_calendar
 
 
+def merge_with_existing(bucket: str, merged_prefix: str, new_calendar: Calendar) -> Calendar:
+    """
+    기존 merged_all.ics와 새 Calendar를 UID 기반으로 병합
+
+    Args:
+        bucket: S3 버킷 이름
+        merged_prefix: merged 파일 접두사 (예: 'merged/')
+        new_calendar: 새로 병합된 Calendar 객체
+
+    Returns:
+        기존 이벤트와 병합된 Calendar 객체
+    """
+    events_by_uid = {}
+
+    # 1. 기존 merged_all.ics 로드
+    existing_key = f"{merged_prefix}merged_all.ics"
+    existing_content = download_ics(bucket, existing_key)
+
+    if existing_content:
+        try:
+            existing_cal = Calendar(existing_content)
+            for event in existing_cal.events:
+                events_by_uid[event.uid] = event
+            logger.info(f"기존 이벤트 {len(existing_cal.events)}개 로드: {existing_key}")
+        except Exception as e:
+            logger.warning(f"기존 파일 파싱 실패, 새 이벤트만 사용: {e}")
+    else:
+        logger.info(f"기존 파일 없음, 새 이벤트만 사용: {existing_key}")
+
+    # 2. 새 이벤트로 덮어쓰기
+    for event in new_calendar.events:
+        events_by_uid[event.uid] = event
+
+    # 3. 최종 Calendar 생성
+    merged_calendar = Calendar()
+    for event in events_by_uid.values():
+        merged_calendar.events.add(event)
+
+    logger.info(f"병합 결과: 기존 + 신규 = {len(merged_calendar.events)}개 이벤트")
+    return merged_calendar
+
+
 def generate_category_combinations(
     merged_calendar: Calendar,
     combinations: Dict[str, Set[str]]
@@ -175,6 +217,9 @@ def lambda_handler(event, context):
         # 1. S3 raw/ 폴더의 모든 ICS 파일 병합
         merged_calendar = merge_all_ics_files(bucket, raw_prefix)
 
+        # 2. 기존 merged_all.ics와 병합 (이벤트 유실 방지)
+        merged_calendar = merge_with_existing(bucket, merged_prefix, merged_calendar)
+
         if len(merged_calendar.events) == 0:
             logger.warning("병합할 이벤트가 없습니다.")
             return {
@@ -186,10 +231,10 @@ def lambda_handler(event, context):
                 }
             }
 
-        # 2. 카테고리 조합별 파일 생성
+        # 3. 카테고리 조합별 파일 생성
         merged_files = generate_category_combinations(merged_calendar, MERGE_COMBINATIONS)
 
-        # 3. S3 merged/ 폴더에 업로드
+        # 4. S3 merged/ 폴더에 업로드
         upload_results = upload_merged_files(bucket, merged_prefix, merged_files)
 
         # 결과 통계

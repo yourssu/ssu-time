@@ -4,7 +4,7 @@ ics 라이브러리를 사용하여 통일된 ICS 파일을 생성합니다.
 """
 
 from ics import Calendar, Event
-from datetime import datetime, date
+from datetime import datetime, date, time
 from typing import List, Optional
 import uuid
 
@@ -15,6 +15,7 @@ def create_event(
     end_date: Optional[datetime] = None,
     categories: List[str] = "EVENT",
     url: Optional[str] = None,
+    description: Optional[str] = None,
 ) -> Event:
     """
     ICS 이벤트 생성
@@ -34,9 +35,9 @@ def create_event(
     event.name = title
     event.created = datetime.now()
     
-    all_day = False
-    if start_date.time() is datetime.min.time():
-        all_day = True
+    all_day = start_date.time() == time(0, 0)
+    if end_date == None:
+        end_date = start_date
 
     if all_day:
         # 하루종일 이벤트
@@ -53,8 +54,10 @@ def create_event(
     event.categories = categories
     if url:
         event.url = url
+    if description:
+        event.description = description
 
-    event.uid = f"{uuid.uuid4()}@yourssu.com"
+    event.uid = f"{uuid.uuid5(uuid.NAMESPACE_OID, title)}@yourssu.com"
 
     return event
 
@@ -66,6 +69,7 @@ def split_long_duration_event(
     categories: list[str],
     url: Optional[str] = None,
     threshold_days: int = 7,
+    description: Optional[str] = None,
 ) -> List[Event]:
     """
     7일 이상 이벤트를 시작/마감으로 분리
@@ -82,17 +86,15 @@ def split_long_duration_event(
     Returns:
         Event 객체 리스트 (1개 또는 2개)
     """
+    has_time = end_date.time() != time(0, 0)
     duration = (end_date - start_date).days
-    has_time = False
-    if start_date.time() is datetime.min.time():
-        has_time = True
     
     if duration < threshold_days:
         # 짧은 기간: 단일 이벤트
         if has_time:
-            return [create_event(f"{title} 기간", start_date, end_date, categories, url)]
+            return [create_event(f"{title} 기간", start_date, end_date, categories, url, description)]
         else:
-            return [create_event(title, start_date, end_date, categories, url)]
+            return [create_event(title, start_date, end_date, categories, url, description)]
 
     # 긴 기간: 시작/마감으로 분리
     events = []
@@ -101,40 +103,22 @@ def split_long_duration_event(
     start_event = create_event(
         f"{title} 시작",
         start_date,
+        start_date,
         categories=categories,
         url=url,
+        description=description
     )
     events.append(start_event)
 
     # 마감 이벤트
-    if has_time and hasattr(end_date, 'hour'):
-        # 시간 정보가 있으면 마감 1시간 전부터 시작하는 1시간 이벤트
-        end_hour = end_date.hour
-        end_min = end_date.minute
-        end_hour_start = end_hour - 1 if end_hour > 0 else 23
-
-        if end_hour > 0:
-            end_begin = end_date.replace(hour=end_hour_start)
-        else:
-            # 자정인 경우 전날 23시
-            from datetime import timedelta
-            end_begin = (end_date - timedelta(days=1)).replace(hour=23, minute=end_min)
-
-        end_event = create_event(
-            f"{title} 마감",
-            end_begin,
-            end_date,
-            categories=categories,
-            url=url,
-        )
-    else:
-        # 시간 정보 없으면 하루종일 이벤트
-        end_event = create_event(
-            f"{title} 마감",
-            end_date,
-            categories=categories,
-            url=url,
-        )
+    end_event = create_event(
+        f"{title} 마감",
+        end_date,
+        end_date,
+        categories=categories,
+        url=url,
+        description=description,
+    )
 
     events.append(end_event)
     return events
