@@ -135,7 +135,6 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
           PROJECT_NAME: ${{ vars.PROJECT_NAME }}
-          ENVIRONMENT: ${{ vars.ENVIRONMENT }}
 
           ECR_REGISTRY: public.ecr.aws/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
 
@@ -157,7 +156,6 @@ jobs:
           echo "DB_PASSWORD=$DB_PASSWORD" >> .env
           
           echo "PROJECT_NAME=$PROJECT_NAME" >> .env
-          echo "ENVIRONMENT=$ENVIRONMENT" >> .env
           
           echo "ECR_REGISTRY=$ECR_REGISTRY" >> .env
 
