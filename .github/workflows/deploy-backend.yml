@@ -164,8 +164,8 @@ jobs:
           
           echo "ECR_REGISTRY=$ECR_REGISTRY" >> .env
 
-          echo "MIXPANEL_TOKEN=$MIXPANEL_TOKEN >> .env"
-          echo "MIXPANEL_EVENT_NAME=$MIXPANEL_EVENT_NAME >> .env"
+          echo "MIXPANEL_TOKEN=$MIXPANEL_TOKEN" >> .env
+          echo "MIXPANEL_EVENT_NAME=$MIXPANEL_EVENT_NAME" >> .env
           
           # create deployment directory structure
           ssh -i yourssu.pem ubuntu@$HOST_URL "mkdir -p ~/$PROJECT_NAME-api/logs"
