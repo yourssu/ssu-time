@@ -20,6 +20,7 @@ class CalendarController(
 
     @PostMapping("/subscribe-url")
     fun createUrl(
+        @RequestHeader("User-Agent", required = true) userAgent: String,
         @RequestBody request: CreateUrlRequest
     ): ResponseEntity<Unit> {
         val categories = try {
@@ -27,7 +28,7 @@ class CalendarController(
         } catch (_: IllegalArgumentException) {
             return ResponseEntity.badRequest().build()
         }
-        val userId = calendarService.subscribe(categories)
+        val userId = calendarService.subscribe(categories, userAgent)
         val location = "/api/v1/calendar/$userId"
 
         return ResponseEntity.created(URI.create(location)).build()

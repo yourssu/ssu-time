@@ -5,7 +5,11 @@ import api.ssutime.calendar.sub.category.implement.CategoryFinder
 import api.ssutime.calendar.sub.user.implement.UserAppender
 import api.ssutime.calendar.sub.user.implement.UserFinder
 import api.ssutime.calendar.util.CategoryObjectMapper
+import api.ssutime.calendar.util.toMap
+import api.ssutime.common.util.UserAgentParser
+import api.ssutime.infrastructure.mixpanel.MessageSender
 import api.ssutime.infrastructure.storage.ObjectStorage
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
 import java.util.*
@@ -16,12 +20,20 @@ class CalendarService(
     private val userFinder: UserFinder,
     private val categoryFetcher: CategoryFetcher,
     private val categoryFinder: CategoryFinder,
-    private val objectStorage: ObjectStorage
+    private val objectStorage: ObjectStorage,
+    private val messageSender: MessageSender
 ) {
 
-    fun subscribe(categories: List<Category>): String {
+    @Value("\${mixpanel.event-name}")
+    private lateinit var eventName: String
+
+    fun subscribe(categories: List<Category>, userAgent: String): String {
         val user = userAppender.append()
+        val os = UserAgentParser.parse(userAgent)
         categoryFetcher.fetch(categories, user)
+        val jsonMap = categories.toMap()
+        jsonMap["os"] = os
+        messageSender.send(jsonMap, user.id.toString(), eventName)
         return user.id.toString()
     }
 
