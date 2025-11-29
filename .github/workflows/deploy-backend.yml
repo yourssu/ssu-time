@@ -39,7 +39,7 @@ jobs:
           cache: 'gradle'
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x ~/backend/api/gradlew
 
       # Additional Gradle Caches for better performance
       - name: Cache Gradle packages
@@ -60,7 +60,8 @@ jobs:
           echo "MIX_PANEL_TOKEN=$MIX_PANEL_TOKEN"
           echo "MIX_PANEL_EVENT_NAME=$MIX_PANEL_EVENT_NAME"
 
-          ./gradlew clean build --build-cache --parallel --daemon
+          
+          ./backend/api/gradlew clean build --build-cache --parallel --daemon
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
