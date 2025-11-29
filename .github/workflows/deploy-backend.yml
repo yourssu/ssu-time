@@ -56,10 +56,15 @@ jobs:
         env:
           MIXPANEL_TOKEN: ${{ secrets.MIXPANEL_TOKEN }}
           MIXPANEL_EVENT_NAME: ${{ vars.MIXPANEL_EVENT_NAME }}
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           echo "MIXPANEL_TOKEN=$MIXPANEL_TOKEN"
           echo "MIXPANEL_EVENT_NAME=$MIXPANEL_EVENT_NAME"
-
+          echo "DB_URL=$DB_URL"
+          echo "DB_USERNAME=$DB_USERNAME"
+          echo "DB_PASSWORD=$DB_PASSWORD"
           
           ./gradlew clean build --build-cache --parallel --daemon
 
