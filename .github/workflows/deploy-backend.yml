@@ -26,7 +26,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./
+        working-directory: ./backend/api
 
     steps:
       - uses: actions/checkout@v4
@@ -39,7 +39,7 @@ jobs:
           cache: 'gradle'
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ~/backend/api/gradlew
+        run: chmod +x gradlew
 
       # Additional Gradle Caches for better performance
       - name: Cache Gradle packages
@@ -61,7 +61,7 @@ jobs:
           echo "MIX_PANEL_EVENT_NAME=$MIX_PANEL_EVENT_NAME"
 
           
-          ./backend/api/gradlew clean build --build-cache --parallel --daemon
+          gradlew clean build --build-cache --parallel --daemon
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -169,7 +169,7 @@ jobs:
           
           # deploy environment file and docker script to host machine
           scp -i yourssu.pem .env ubuntu@$HOST_URL:~/$PROJECT_NAME-api/
-          scp -i yourssu.pem backend/api/deploy/docker-deploy.sh ubuntu@$HOST_URL:~/$PROJECT_NAME-api/
+          scp -i yourssu.pem deploy/docker-deploy.sh ubuntu@$HOST_URL:~/$PROJECT_NAME-api/
           
           # Make the script executable
           ssh -i yourssu.pem ubuntu@$HOST_URL "chmod +x ~/$PROJECT_NAME-api/docker-deploy.sh"
