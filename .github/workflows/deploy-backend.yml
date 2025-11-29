@@ -175,8 +175,8 @@ jobs:
           scp -i yourssu.pem deploy/docker-deploy-backend.sh ubuntu@$HOST_URL:~/$PROJECT_NAME-api/
           
           # Make the script executable
-          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod +x ~/$PROJECT_NAME-api/docker-deploy.sh"
+          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod +x ~/$PROJECT_NAME-api/docker-deploy-backend.sh"
           
           # Execute the script
           ssh -i yourssu.pem ubuntu@$HOST_URL "cd ~/$PROJECT_NAME-api && \
-            PROJECT_NAME=$PROJECT_NAME IMAGE_TAG=${{ github.event.inputs.tag || github.sha }} ./docker-deploy.sh"
+            PROJECT_NAME=$PROJECT_NAME IMAGE_TAG=${{ github.event.inputs.tag || github.sha }} ./docker-deploy-backend.sh"
