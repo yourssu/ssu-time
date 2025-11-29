@@ -16,8 +16,9 @@ jobs:
     environment: dev
     
     if: |
-      github.event.pull_request.merged == true &&
-      contains(github.event.pull_request.labels.*.name, 'backend-deploy')
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.merged == true &&
+      contains(github.event.pull_request.labels.*.name, 'backend-deploy'))
 
     permissions:
       id-token: write
