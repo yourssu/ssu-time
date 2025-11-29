@@ -8,4 +8,4 @@ EXPOSE ${SERVER_PORT:-8080}
 
 # 직접 실행 (스크립트 없이)
 ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "/app/app.jar"]
-CMD ["--spring.profiles.active=${ENVIRONMENT:-dev}", "--server.port=${SERVER_PORT:-8080}"]
+CMD ["--server.port=${SERVER_PORT:-8080}"]
