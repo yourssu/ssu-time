@@ -172,7 +172,7 @@ jobs:
           
           # deploy environment file and docker script to host machine
           scp -i yourssu.pem .env ubuntu@$HOST_URL:~/$PROJECT_NAME-api/
-          scp -i yourssu.pem deploy/docker-deploy.sh ubuntu@$HOST_URL:~/$PROJECT_NAME-api/
+          scp -i yourssu.pem deploy/docker-deploy-backend.sh ubuntu@$HOST_URL:~/$PROJECT_NAME-api/
           
           # Make the script executable
           ssh -i yourssu.pem ubuntu@$HOST_URL "chmod +x ~/$PROJECT_NAME-api/docker-deploy.sh"
