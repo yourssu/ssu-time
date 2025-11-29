@@ -33,6 +33,7 @@ class CalendarService(
         categoryFetcher.fetch(categories, user)
         val jsonMap = categories.toMap()
         jsonMap["os"] = os
+        jsonMap["provider"] = if (os == "iOS") "Apple" else "Google"
         messageSender.send(jsonMap, user.id.toString(), eventName)
         return user.id.toString()
     }
