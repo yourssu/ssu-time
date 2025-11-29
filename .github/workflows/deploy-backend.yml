@@ -61,7 +61,7 @@ jobs:
           echo "MIX_PANEL_EVENT_NAME=$MIX_PANEL_EVENT_NAME"
 
           
-          gradlew clean build --build-cache --parallel --daemon
+          ./gradlew clean build --build-cache --parallel --daemon
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
