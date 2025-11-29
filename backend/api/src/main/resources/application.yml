@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: ssutime
+  datasource:
+    url: ${DB_URL}
+
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+cloud:
+  aws:
+    s3:
+      bucket: "ssu-time-crawler-output"
+    region:
+      static: "ap-northeast-2"
