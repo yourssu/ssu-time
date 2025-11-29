@@ -1,4 +1,4 @@
-package api.demo
+package api.ssutime
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
