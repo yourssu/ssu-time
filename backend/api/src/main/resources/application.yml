@@ -13,3 +13,6 @@ cloud:
       bucket: "ssu-time-crawler-output"
     region:
       static: "ap-northeast-2"
+mixpanel:
+  token: ${MIXPANEL_TOKEN}
+  event-name: ${MIXPANEL_EVENT_NAME}
