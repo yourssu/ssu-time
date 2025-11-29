@@ -54,11 +54,11 @@ jobs:
 
       - name: Clean Build with Gradle (with Testing)
         env:
-          MIX_PANEL_TOKEN: ${{ secrets.MIX_PANEL_TOKEN }}
-          MIX_PANEL_EVENT_NAME: ${{ vars.MIX_PANEL_EVENT_NAME }}
+          MIXPANEL_TOKEN: ${{ secrets.MIXPANEL_TOKEN }}
+          MIXPANEL_EVENT_NAME: ${{ vars.MIXPANEL_EVENT_NAME }}
         run: |
-          echo "MIX_PANEL_TOKEN=$MIX_PANEL_TOKEN"
-          echo "MIX_PANEL_EVENT_NAME=$MIX_PANEL_EVENT_NAME"
+          echo "MIXPANEL_TOKEN=$MIXPANEL_TOKEN"
+          echo "MIXPANEL_EVENT_NAME=$MIXPANEL_EVENT_NAME"
 
           
           ./gradlew clean build --build-cache --parallel --daemon
@@ -139,8 +139,8 @@ jobs:
           ECR_REGISTRY: public.ecr.aws/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
 
           # For this project
-          MIX_PANEL_TOKEN: ${{ secrets.MIX_PANEL_TOKEN }}
-          MIX_PANEL_EVENT_NAME: ${{ vars.MIX_PANEL_EVENT_NAME }}
+          MIXPANEL_TOKEN: ${{ secrets.MIXPANEL_TOKEN }}
+          MIXPANEL_EVENT_NAME: ${{ vars.MIXPANEL_EVENT_NAME }}
 
         run: |
           mkdir -p ~/.ssh
@@ -159,8 +159,8 @@ jobs:
           
           echo "ECR_REGISTRY=$ECR_REGISTRY" >> .env
 
-          echo "MIX_PANEL_TOKEN=$MIX_PANEL_TOKEN >> .env"
-          echo "MIX_PANEL_EVENT_NAME=$MIX_PANEL_EVENT_NAME >> .env"
+          echo "MIXPANEL_TOKEN=$MIXPANEL_TOKEN >> .env"
+          echo "MIXPANEL_EVENT_NAME=$MIXPANEL_EVENT_NAME >> .env"
           
           # create deployment directory structure
           ssh -i yourssu.pem ubuntu@$HOST_URL "mkdir -p ~/$PROJECT_NAME-api/logs"
