@@ -14,6 +14,7 @@ class CategoryFetcher(
 
     fun fetch(categories: List<Category>, user: User) {
         val entities = categories.map { SubscribeCategoryEntity(category = it, user = UserEntity(user.id)) }
+        categoryRepository.removeByUserId(user.id)
         categoryRepository.saveAll(entities)
     }
 }
