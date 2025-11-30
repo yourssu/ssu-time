@@ -4,11 +4,11 @@ object UserAgentParser {
 
     fun parse(userAgent: String): String {
         return when {
-            userAgent.contains("Android", ignoreCase = true) -> "Android"
+            userAgent.contains("Android", ignoreCase = true) -> "android"
             userAgent.contains("iPhone", ignoreCase = true) ||
-                    userAgent.contains("iPad", ignoreCase = true) -> "iOS"
+                    userAgent.contains("iPad", ignoreCase = true) -> "ios"
 
-            else -> "Web"
+            else -> "web"
         }
     }
 }

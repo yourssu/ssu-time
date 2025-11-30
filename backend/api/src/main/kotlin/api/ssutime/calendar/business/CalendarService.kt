@@ -33,8 +33,8 @@ class CalendarService(
         val os = UserAgentParser.parse(userInfoCommand.userAgent)
         categoryFetcher.fetch(categories, user)
         val jsonMap = categories.toMap()
-        jsonMap["os"] = os
-        jsonMap["provider"] = userInfoCommand.provider
+        jsonMap["os"] = os.lowercase()
+        jsonMap["provider"] = userInfoCommand.provider.lowercase()
         messageSender.send(jsonMap, user.id.toString(), eventName)
         return user.id.toString()
     }

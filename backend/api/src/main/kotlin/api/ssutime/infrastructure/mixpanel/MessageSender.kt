@@ -15,7 +15,7 @@ class MessageSender {
 
     private final val distinctIdPrefix = "\$device:"
 
-    fun send(jsonMap: Map<String, String>, distinctId: String, eventName: String) {
+    fun send(jsonMap: Map<String, Any>, distinctId: String, eventName: String) {
         val messageBuilder = MessageBuilder(projectToken)
 
         val jsonObject = JSONObject()
