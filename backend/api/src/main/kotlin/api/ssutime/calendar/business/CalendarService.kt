@@ -27,13 +27,13 @@ class CalendarService(
     @Value("\${mixpanel.event-name}")
     private lateinit var eventName: String
 
-    fun subscribe(categories: List<Category>, userAgent: String): String {
+    fun subscribe(categories: List<Category>, userAgent: String, provider: String): String {
         val user = userAppender.append()
         val os = UserAgentParser.parse(userAgent)
         categoryFetcher.fetch(categories, user)
         val jsonMap = categories.toMap()
         jsonMap["os"] = os
-        jsonMap["provider"] = if (os == "iOS") "Apple" else "Google"
+        jsonMap["provider"] = provider
         messageSender.send(jsonMap, user.id.toString(), eventName)
         return user.id.toString()
     }
