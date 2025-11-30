@@ -10,6 +10,7 @@ import api.ssutime.calendar.util.toMap
 import api.ssutime.common.util.UserAgentParser
 import api.ssutime.infrastructure.mixpanel.MessageSender
 import api.ssutime.infrastructure.storage.ObjectStorage
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
@@ -28,6 +29,7 @@ class CalendarService(
     @Value("\${mixpanel.event-name}")
     private lateinit var eventName: String
 
+    @Transactional
     fun subscribe(categories: List<Category>, userInfoCommand: UserInfoCommand): String {
         val user = userAppender.append(userInfoCommand.distinctId)
         val os = UserAgentParser.parse(userInfoCommand.userAgent)
