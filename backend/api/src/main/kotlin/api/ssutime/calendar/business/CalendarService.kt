@@ -1,5 +1,6 @@
 package api.ssutime.calendar.business
 
+import api.ssutime.calendar.business.dto.UserInfoCommand
 import api.ssutime.calendar.sub.category.implement.CategoryFetcher
 import api.ssutime.calendar.sub.category.implement.CategoryFinder
 import api.ssutime.calendar.sub.user.implement.UserAppender
@@ -27,13 +28,13 @@ class CalendarService(
     @Value("\${mixpanel.event-name}")
     private lateinit var eventName: String
 
-    fun subscribe(categories: List<Category>, userAgent: String, provider: String): String {
-        val user = userAppender.append()
-        val os = UserAgentParser.parse(userAgent)
+    fun subscribe(categories: List<Category>, userInfoCommand: UserInfoCommand): String {
+        val user = userAppender.append(userInfoCommand.distinctId)
+        val os = UserAgentParser.parse(userInfoCommand.userAgent)
         categoryFetcher.fetch(categories, user)
         val jsonMap = categories.toMap()
         jsonMap["os"] = os
-        jsonMap["provider"] = provider
+        jsonMap["provider"] = userInfoCommand.provider
         messageSender.send(jsonMap, user.id.toString(), eventName)
         return user.id.toString()
     }

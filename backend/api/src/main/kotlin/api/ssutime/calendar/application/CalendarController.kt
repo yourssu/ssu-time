@@ -3,6 +3,7 @@ package api.ssutime.calendar.application
 import api.ssutime.calendar.application.dto.CreateUrlRequest
 import api.ssutime.calendar.business.CalendarService
 import api.ssutime.calendar.business.Category
+import api.ssutime.calendar.business.dto.UserInfoCommand
 import org.springframework.core.io.Resource
 import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
@@ -27,7 +28,13 @@ class CalendarController(
         } catch (_: IllegalArgumentException) {
             return ResponseEntity.badRequest().build()
         }
-        val userId = calendarService.subscribe(categories, userAgent, request.provider)
+        val command =
+            UserInfoCommand(
+                userAgent = userAgent,
+                provider = request.provider,
+                distinctId = request.distinctId
+            )
+        val userId = calendarService.subscribe(categories, command)
         val location = "/api/v1/calendar/$userId"
 
         return ResponseEntity.created(URI.create(location)).build()
