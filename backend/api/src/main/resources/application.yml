@@ -6,6 +6,10 @@ spring:
 
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+  cors:
+    allowed-origins:
+      - localhost:3000
+      - https://ssu-time.vercel.app
 
 cloud:
   aws:
