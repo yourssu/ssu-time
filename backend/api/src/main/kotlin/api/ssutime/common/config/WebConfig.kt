@@ -13,6 +13,7 @@ class WebConfig(
             .allowedOrigins(*corsProperties.allowedOrigins)
             .allowedMethods("*")
             .allowedHeaders("*")
+            .exposedHeaders("Location")
             .allowCredentials(true)
     }
 }
