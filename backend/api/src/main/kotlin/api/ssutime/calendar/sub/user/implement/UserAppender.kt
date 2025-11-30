@@ -10,7 +10,7 @@ class UserAppender(
     private val userRepository: UserRepository
 ) {
 
-    fun append(): User {
-        return userRepository.save(UserEntity(id = UUID.randomUUID())).toDomain()
+    fun append(userId: UUID): User {
+        return userRepository.save(UserEntity(id = userId)).toDomain()
     }
 }

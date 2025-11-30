@@ -13,12 +13,14 @@ class MessageSender {
     @Value("\${mixpanel.token}")
     private lateinit var projectToken: String
 
-    fun send(jsonMap: Map<String, String>, distinctId: String, eventName: String) {
+    private final val distinctIdPrefix = "\$device:"
+
+    fun send(jsonMap: Map<String, Any>, distinctId: String, eventName: String) {
         val messageBuilder = MessageBuilder(projectToken)
 
         val jsonObject = JSONObject()
         jsonMap.forEach { jsonObject.put(it.key, it.value) }
-        val event = messageBuilder.event(distinctId, eventName, jsonObject)
+        val event = messageBuilder.event("${distinctIdPrefix}$distinctId", eventName, jsonObject)
 
         val delivery = ClientDelivery()
         delivery.addMessage(event)
